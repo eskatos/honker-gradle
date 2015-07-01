@@ -15,7 +15,7 @@
  */
 package org.nosphere.honker.gradle;
 
-class HonkerExtension {
+public class HonkerExtension {
     String license
     String projectName
     String projectTimespan

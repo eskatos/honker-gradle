@@ -99,7 +99,10 @@ public final class DepTreeData
             this.coordinates = coordinates;
             this.manifest = manifest;
             this.pom = pom;
-            this.licenseFiles.addAll( licenseFiles );
+            if( licenseFiles != null )
+            {
+                this.licenseFiles.addAll( licenseFiles );
+            }
             detectLicenses();
         }
 
@@ -253,7 +256,7 @@ public final class DepTreeData
 
     public static final class Manifest
     {
-        static final Manifest EMPTY = new Manifest( null, null, null, null, null );
+        public static final Manifest EMPTY = new Manifest( null, null, null, null, null );
 
         private final String name;
         private final String version;
@@ -330,13 +333,25 @@ public final class DepTreeData
         private final String url;
         private final Set<PomLicense> licenses = new LinkedHashSet<>();
 
-        public Pom( String organization, String organizationUrl, String name, String version, String url )
+        public Pom( String organization, String organizationUrl,
+                    String name, String version, String url )
+        {
+            this( organization, organizationUrl, name, version, url, null );
+        }
+
+        public Pom( String organization, String organizationUrl,
+                    String name, String version, String url,
+                    Collection<PomLicense> licenses )
         {
             this.organization = organization;
             this.organizationUrl = organizationUrl;
             this.name = name;
             this.version = version;
             this.url = url;
+            if( licenses != null )
+            {
+                this.licenses.addAll( licenses );
+            }
         }
 
         void addLicense( PomLicense license )

@@ -67,6 +67,7 @@ class HonkerPlugin implements Plugin<Project> {
             description: 'Generate project\'s DEPENDENCIES file.'
         )
         project.afterEvaluate { proj ->
+            // License declaration is mandatory
             if(proj.honker.license && !License.valueOfLicenseName( proj.honker.license )) {
                 throw new GradleException( "Invalid/unknown project's license: '$proj.honker.license'" );
             }
