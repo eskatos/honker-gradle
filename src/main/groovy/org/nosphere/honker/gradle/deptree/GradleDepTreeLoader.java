@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ResolvedArtifact;
-import org.gradle.api.artifacts.ResolvedConfiguration;
 import org.gradle.api.artifacts.ResolvedDependency;
 
 import org.apache.commons.lang.StringUtils;
@@ -42,9 +42,9 @@ public class GradleDepTreeLoader
     private final DepTreeManifestLoader manifestLoader;
     private final DepTreePomLoader pomLoader;
     private final DepTreeFilesLoader licenseFilesLoader;
-    private final ResolvedConfiguration configuration;
+    private final Configuration configuration;
 
-    public GradleDepTreeLoader( Project project, ResolvedConfiguration configuration )
+    public GradleDepTreeLoader( Project project, Configuration configuration )
     {
         this.manifestLoader = new DepTreeManifestLoader();
         this.pomLoader = new GradlePomLoader( project );
@@ -56,7 +56,7 @@ public class GradleDepTreeLoader
     public DepTree load()
     {
         List<DepTreeNode> rootNodes = new ArrayList<>();
-        for( ResolvedDependency dep : configuration.getFirstLevelModuleDependencies() )
+        for( ResolvedDependency dep : configuration.getResolvedConfiguration().getFirstLevelModuleDependencies() )
         {
             rootNodes.add( createRootNode( dep ) );
         }

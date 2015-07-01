@@ -33,7 +33,7 @@ class HonkerCheckTask extends DefaultTask {
     @TaskAction
     void check()
     {
-        def depTree = new GradleDepTreeLoader( project, configuration.resolvedConfiguration ).load()
+        def depTree = new GradleDepTreeLoader( project, configuration ).load()
 
         def errors =  []
 

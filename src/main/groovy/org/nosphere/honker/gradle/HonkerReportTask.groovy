@@ -30,7 +30,7 @@ class HonkerReportTask extends DefaultTask {
     @TaskAction
     void report()
     {
-        def depTree = new GradleDepTreeLoader( project, configuration.resolvedConfiguration ).load()
+        def depTree = new GradleDepTreeLoader( project, configuration ).load()
         def visitor = new LicensingReportVisitor();
 
         println "------------------------------------------------------------------------------------------------------"

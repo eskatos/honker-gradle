@@ -48,7 +48,7 @@ class HonkerGenDependenciesTask extends DefaultTask {
     @TaskAction
     void generate()
     {
-        def depTree = new GradleDepTreeLoader( project, configuration.resolvedConfiguration ).load()
+        def depTree = new GradleDepTreeLoader( project, configuration ).load()
         def depsVisitor = new DependenciesByOrganizationsVisitor()
         depTree.accept( depsVisitor )
 
