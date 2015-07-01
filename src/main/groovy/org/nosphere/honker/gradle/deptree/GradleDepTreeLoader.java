@@ -34,6 +34,7 @@ import org.nosphere.honker.deptree.DepTreeLoader;
 import org.nosphere.honker.deptree.DepTreeManifestLoader;
 import org.nosphere.honker.deptree.DepTreeNode;
 import org.nosphere.honker.deptree.DepTreePomLoader;
+import org.nosphere.honker.deptree.Gav;
 
 public class GradleDepTreeLoader
     implements DepTreeLoader
@@ -104,7 +105,7 @@ public class GradleDepTreeLoader
         DepTreeData.Manifest manifest = manifestLoader.load( artifact.getFile() );
         DepTreeData.Pom pom = pomLoader.load(
             artifact.getFile(),
-            new DepTreePomLoader.Gav(
+            new Gav(
                 artifact.getModuleVersion().getId().getGroup(),
                 artifact.getModuleVersion().getId().getName(),
                 artifact.getModuleVersion().getId().getVersion()
