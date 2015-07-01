@@ -38,8 +38,8 @@ public enum License
 {
     APACHE_2(
         asList(
-            "Apache 2",
             "The Apache Software License, Version 2.0",
+            "Apache 2",
             "Apache Software License, Version 2.0",
             "Apache License, version 2.0.",
             "Apache License, version 2.0",
@@ -59,8 +59,8 @@ public enum License
     ),
     APACHE_1_1(
         asList(
-            "Apache 1.1",
             "The Apache Software License, Version 1.1",
+            "Apache 1.1",
             "Apache Software License, Version 1.1",
             "Apache Software License 1.1",
             "Apache License 1.1"
@@ -76,8 +76,8 @@ public enum License
     ),
     PHP_3_1(
         asList(
-            "PHP License 3.01",
             "The PHP License, version 3.01",
+            "PHP License 3.01",
             "PHP License, version 3.01"
         ),
         asList(
@@ -86,12 +86,12 @@ public enum License
     ),
     BSD_3_CLAUSES(
         asList(
+            "BSD 3-Clause License",
             "BSD",
             "BSD License",
             "New BSD License",
             "Revised BSD License",
             "BSD 3-Clause",
-            "BSD 3-Clause License",
             "BSD 3-Clause \"New\" or \"Revised\" license"
         ),
         asList(
@@ -102,10 +102,10 @@ public enum License
     ),
     BSD_2_CLAUSES(
         asList(
+            "BSD 2-Clause \"Simplified\" or \"FreeBSD\" license",
             "FreeBSD",
             "FreeBSD License",
-            "Simplified BSD License",
-            "BSD 2-Clause \"Simplified\" or \"FreeBSD\" license"
+            "Simplified BSD License"
         ),
         asList(
             "http://opensource.org/licenses/BSD-2-Clause"
@@ -113,8 +113,8 @@ public enum License
     ),
     MIT_X11(
         asList(
-            "MIT",
             "MIT License",
+            "MIT",
             "X11",
             "X11 License",
             "MIT/X Consortium License",
@@ -129,8 +129,8 @@ public enum License
     ),
     ICU(
         asList(
-            "ICU",
-            "ICU License"
+            "ICU License",
+            "ICU"
         ),
         asList(
             "http://source.icu-project.org/repos/icu/icu/trunk/license.html"
@@ -138,8 +138,8 @@ public enum License
     ),
     UoL_NCSA(
         asList(
-            "UoI-NCSA",
             "The University of Illinois/NCSA Open Source License (NCSA)",
+            "UoI-NCSA",
             "The University of Illinois/NCSA Open Source License",
             "University of Illinois/NCSA Open Source License (NCSA)",
             "University of Illinois/NCSA Open Source License"
@@ -150,8 +150,8 @@ public enum License
     ),
     W3C(
         asList(
-            "W3C",
             "The W3C SOFTWARE NOTICE AND LICENSE (W3C)",
+            "W3C",
             "The W3C SOFTWARE NOTICE AND LICENSE",
             "W3C SOFTWARE NOTICE AND LICENSE (W3C)",
             "W3C SOFTWARE NOTICE AND LICENSE",
@@ -163,8 +163,8 @@ public enum License
     ),
     ZLIB(
         asList(
-            "Zlib",
             "The zlib/libpng License (Zlib)",
+            "Zlib",
             "The zlib/libpng License"
         ),
         asList(
@@ -173,10 +173,10 @@ public enum License
     ),
     AFL(
         asList(
+            "Academic Free License (\"AFL\") v. 3.0",
             "AFL",
             "AFL 3.0",
-            "Academic Free License 3.0",
-            "Academic Free License (\"AFL\") v. 3.0"
+            "Academic Free License 3.0"
         ),
         asList(
             "http://opensource.org/licenses/afl-3.0.php"
@@ -184,8 +184,8 @@ public enum License
     ),
     MS_PL(
         asList(
-            "MS-PL",
             "Microsoft Public License (MS-PL)",
+            "MS-PL",
             "Microsoft Public License"
         ),
         asList(
@@ -195,26 +195,26 @@ public enum License
     ),
     CC_A(
         asList(
+            "Creative Commons Attribution (CC-A) 3.0",
             "CC-A",
             "CC-A 2.5",
             "CC-A 3.0",
             "Attribution 2.5 Generic (CC BY 2.5)",
             "Attribution 3.0 Unported (CC BY 3.0)",
-            "Creative Commons Attribution (CC-A) 2.5",
-            "Creative Commons Attribution (CC-A) 3.0"
+            "Creative Commons Attribution (CC-A) 2.5"
         ),
         asList(
-            "https://creativecommons.org/licenses/by/2.5/",
-            "https://creativecommons.org/licenses/by/3.0/"
+            "https://creativecommons.org/licenses/by/3.0/",
+            "https://creativecommons.org/licenses/by/2.5/"
         )
     ),
     PYTHON(
         asList(
+            "Python License, Version 2 (Python-2.0)",
             "Python",
             "Python License",
             "Python License 2.0",
             "Python License (Python-2.0)",
-            "Python License, Version 2 (Python-2.0)",
             "Python Software Foundation License",
             "PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2"
         ),
@@ -227,11 +227,11 @@ public enum License
     ),
     BSL(
         asList(
+            "Boost Software License 1.0 (BSL-1.0)",
             "BSL",
             "BSL-1.0",
             "BSL 1.0",
             "Boost Software License Version 1.0",
-            "Boost Software License 1.0 (BSL-1.0)",
             "Boost Software License 1.0"
         ),
         asList(
@@ -243,10 +243,10 @@ public enum License
     ),
     EDL(
         asList(
+            "Eclipse Distribution License (EDL)",
             "EDL",
             "EDL 1.0",
             "Eclipse Distribution License",
-            "Eclipse Distribution License (EDL)",
             "Eclipse Distribution License - v 1.0"
         ),
         asList(
@@ -256,10 +256,10 @@ public enum License
     ),
     EPL(
         asList(
+            "Eclipse Public License (EPL)",
             "EPL",
             "EPL 1.0",
             "Eclipse Public License",
-            "Eclipse Public License (EPL)",
             "Eclipse Public License - v 1.0"
         ),
         asList(
@@ -270,8 +270,8 @@ public enum License
     ),
     WTFPL(
         asList(
-            "WTFPL",
             "WTFPL – Do What the Fuck You Want to Public License",
+            "WTFPL",
             "Do What the Fuck You Want to Public License"
         ),
         asList(
@@ -281,8 +281,8 @@ public enum License
     ),
     RUBY(
         asList(
-            "Ruby",
-            "Ruby License"
+            "Ruby License",
+            "Ruby"
         ),
         asList(
             "http://www.ruby-lang.org/en/LICENSE.txt",
@@ -291,23 +291,23 @@ public enum License
     ),
     MOZILLA(
         asList(
-            "MPL",
-            "Mozilla Public License 2.0"
+            "Mozilla Public License 2.0",
+            "MPL"
         ),
         asList( "http://opensource.org/licenses/MPL-2.0" )
     ),
     CDDL(
         asList(
-            "CDDL",
             "Common Development and Distribution License",
+            "CDDL",
             "Common Development and Distribution License (CDDL)"
         ),
         asList( "http://opensource.org/licenses/CDDL-1.0" )
     ),
     GPL(
         asList(
-            "GPL",
             "GNU General Public License",
+            "GPL",
             "GNU General Public License (GPL)",
             "GNU General Public License, version 1",
             "GNU General Public License, version 2",
@@ -317,12 +317,12 @@ public enum License
             "The GNU General Public License, Version 3"
         ),
         asList(
+            "http://www.gnu.org/licenses/gpl-3.0.html",
             "http://www.gnu.org/licenses/gpl-1.0.txt",
             "http://www.gnu.org/licenses/gpl-1.0.html",
             "http://www.gnu.org/licenses/gpl-2.0.txt",
             "http://www.gnu.org/licenses/gpl-2.0.html",
             "http://www.gnu.org/licenses/gpl-3.0.txt",
-            "http://www.gnu.org/licenses/gpl-3.0.html",
             "http://www.opensource.org/licenses/gpl-license",
             "http://www.opensource.org/licenses/GPL-1.0",
             "http://www.opensource.org/licenses/GPL-1.0.php",
@@ -341,10 +341,10 @@ public enum License
     ),
     LGPL(
         asList(
+            "GNU Lesser General Public License",
             "LGPL",
             "GNU Library General Public License",
             "GNU Library General Public License (LGPL)",
-            "GNU Lesser General Public License",
             "GNU Lesser General Public License (LGPL)",
             "GNU \"Lesser\" General Public License",
             "GNU \"Lesser\" General Public License (LGPL)",
@@ -361,8 +361,9 @@ public enum License
     ),
     AGPL(
         asList(
-            "AGPL",
+            "The Affero GPL License",
             "Affero GPL",
+            "AGPL",
             "Affero GPL 3",
             "GNU AFFERO GENERAL PUBLIC LICENSE, Version 3 (AGPL-3.0)",
             "GNU AFFERO GENERAL PUBLIC LICENSE, Version 3",
@@ -380,9 +381,9 @@ public enum License
     ),
     SLEEPYCAT(
         asList(
+            "The Sleepycat License",
             "Sleepycat",
             "The Sleepycat License (Sleepycat)",
-            "The Sleepycat License",
             "Sleepycat License",
             "The Sleepycat Public License",
             "The Sleepycat License",

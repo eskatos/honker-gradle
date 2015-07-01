@@ -38,7 +38,7 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
                     output.dir( honkerGenNotice.outputDir, builtBy: honkerGenNotice )
                 }
             }
-            honkerGenNotice { footer = 'This product includes software developed at\\nThe Apache Software Foundation (http://www.apache.org/).' }
+            honkerGenNotice { footer = 'This product includes software developed at\nThe Apache Software Foundation (http://www.apache.org/).\n' }
             repositories { jcenter() }
             dependencies {
 
