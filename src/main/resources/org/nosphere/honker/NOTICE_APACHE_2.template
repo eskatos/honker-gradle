@@ -1,0 +1,3 @@
+${header ? "$header\n" : ''}${projectName}
+Copyright $projectTimespan ${projectOrganization ? projectOrganization : 'The Apache Software Foundation'}
+${footer ? "\n$footer" : ''}

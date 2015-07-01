@@ -1,0 +1,7 @@
+.gradle
+.gradletasknamecache
+.nb-gradle
+build
+honker-gradle.iml
+honker-gradle.ipr
+honker-gradle.iws
