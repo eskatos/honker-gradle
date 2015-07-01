@@ -89,7 +89,7 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
         result.standardError.contains('org.antlr:stringtemplate:3.2.1:jar licensing data not found')
     }
 
-    def 'honkerGenNotice generate NOTICE file and is present in JAR'() {
+    def 'honkerGenAll generate DEPENDENCIES, LICENSE and NOTICE files that are present in JAR'() {
         setup:
         fork=true
         buildFile << build
