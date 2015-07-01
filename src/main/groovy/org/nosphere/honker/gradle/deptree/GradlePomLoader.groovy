@@ -40,7 +40,7 @@ import org.apache.commons.lang.StringUtils;
 import org.nosphere.honker.deptree.DepTreeData
 import org.nosphere.honker.deptree.DepTreeData.Pom
 import org.nosphere.honker.deptree.DepTreePomLoader
-import org.nosphere.honker.deptree.DepTreePomLoader.Gav
+import org.nosphere.honker.deptree.Gav
 
 public class GradlePomLoader implements DepTreePomLoader
 {
