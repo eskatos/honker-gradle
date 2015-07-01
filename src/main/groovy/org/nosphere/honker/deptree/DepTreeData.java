@@ -21,7 +21,8 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.maven.artifact.ant.shaded.StringUtils;
+import org.apache.commons.lang.StringUtils;
+
 import org.nosphere.honker.License;
 
 public final class DepTreeData
