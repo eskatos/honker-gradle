@@ -157,6 +157,9 @@ public class GradlePomLoader implements DepTreePomLoader
         String organization = pomXml.organization?.name?.text()
         String organizationUrl = pomXml.organization?.url?.text()
         String name = pomXml.name?.text()
+        if( !name || name == '${project.artifactId}' ) {
+            name = pomXml.artifactId.text()
+        }
         String url = pomXml.url?.text()
         String version = pomXml.version?.text()
         return pomData( pomXml, new DepTreeData.Pom( organization, organizationUrl, name, version, url ) );
