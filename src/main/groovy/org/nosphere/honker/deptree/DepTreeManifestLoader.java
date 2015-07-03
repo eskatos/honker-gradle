@@ -63,7 +63,7 @@ public final class DepTreeManifestLoader
         try
         {
             manifestStream = new FileInputStream( manifestFile );
-            return load( new Manifest( manifestStream ) );
+            return loadData( new Manifest( manifestStream ) );
         }
         finally
         {
@@ -78,7 +78,12 @@ public final class DepTreeManifestLoader
         try
         {
             jar = new JarFile( zipFile );
-            return load( jar.getManifest() );
+            Manifest mf = jar.getManifest();
+            if( mf == null )
+            {
+                return DepTreeData.Manifest.EMPTY;
+            }
+            return loadData( mf );
         }
         finally
         {
@@ -96,7 +101,7 @@ public final class DepTreeManifestLoader
         }
     }
 
-    private DepTreeData.Manifest load( java.util.jar.Manifest mf )
+    private DepTreeData.Manifest loadData( java.util.jar.Manifest mf )
     {
         Attributes attr = mf.getMainAttributes();
         String name = attr.getValue( "Bundle-Name" );
