@@ -402,6 +402,14 @@ public enum License
         asList(
             "http://www.opensource.org/licenses/cpl1.0.txt"
         )
+    ),
+    OSGI(
+        asList(
+            "OSGi Specification License, Version 2.0"
+        ),
+        asList(
+            "http://www.osgi.org/Specifications/Licensing"
+        )
     );
 
     public static License valueOfLicenseName( String licenseName )
