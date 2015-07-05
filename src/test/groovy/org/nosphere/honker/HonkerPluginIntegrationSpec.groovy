@@ -55,6 +55,9 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
                 // GPL- Conflict
                 compile 'mysql:mysql-connector-java:5.1.35'
 
+                // APACHE_2 - Complex License information in Manifest
+                compile 'org.osgi:org.osgi.core:4.2.0'
+
                 // No license data!
                 compile 'org.antlr:stringtemplate:3.2.1'
 

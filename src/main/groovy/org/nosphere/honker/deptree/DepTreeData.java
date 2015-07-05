@@ -108,10 +108,15 @@ public final class DepTreeData
 
         private void detectLicenses()
         {
-            License license = License.valueOfLicenseName( manifest.license );
-            if( license != null )
+            License mfLicense = License.valueOfLicenseName( manifest.license );
+            if( mfLicense != null )
             {
-                detectedLicenses.add( license );
+                detectedLicenses.add( mfLicense );
+            }
+            License mfLicenseUrl = License.valueOfLicenseUrl( manifest.license );
+            if( mfLicenseUrl != null )
+            {
+                detectedLicenses.add( mfLicenseUrl );
             }
             for( DepTreeData.PomLicense pomLicense : pom.licenses )
             {
