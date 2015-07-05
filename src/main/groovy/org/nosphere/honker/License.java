@@ -54,7 +54,8 @@ public enum License
             "http://apache.org/licenses/LICENSE-2.0.txt",
             "http://apache.org/licenses/LICENSE-2.0.html",
             "http://www.opensource.org/licenses/Apache-2.0",
-            "http://opensource.org/licenses/Apache-2.0"
+            "http://opensource.org/licenses/Apache-2.0",
+            "http://opensource.org/licenses/apache2.0.php"
         )
     ),
     APACHE_1_1(
