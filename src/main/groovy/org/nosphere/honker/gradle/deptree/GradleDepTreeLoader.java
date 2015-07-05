@@ -51,6 +51,7 @@ public class GradleDepTreeLoader
     private final DepTreeFilesLoader licenseFilesLoader;
     private final Configuration configuration;
     private final Set<Gav> projectDependencies = new HashSet<>();
+    private final Set<Gav> loaded = new HashSet<>();
 
     public GradleDepTreeLoader( Project project, Configuration configuration )
     {
@@ -59,22 +60,45 @@ public class GradleDepTreeLoader
         this.pomLoader = new GradlePomLoader( project );
         this.licenseFilesLoader = new DepTreeFilesLoader();
         this.configuration = configuration;
+
+        // Recursively record project's Dependencies GAV in order to distinguish ResolvedDependencies later
         for( Dependency dep : configuration.getAllDependencies() )
         {
             if( ProjectDependency.class.isAssignableFrom( dep.getClass() ) )
             {
-                projectDependencies.add( new Gav( dep.getGroup(), dep.getName(), dep.getVersion() ) );
+                recordProjectDependency( (ProjectDependency) dep );
             }
         }
     }
 
-    private boolean isProjectDependency( ResolvedDependency dep )
+    private void recordProjectDependency( ProjectDependency dependency )
     {
+        Gav gav = new Gav( dependency.getGroup(), dependency.getName(), dependency.getVersion() );
+        if( projectDependencies.contains( gav ) )
+        {
+            // Already recorded
+            return;
+        }
+        projectDependencies.add( gav );
+        Project depProject = dependency.getDependencyProject();
+        Configuration depProjectConfig = depProject.getConfigurations().getByName( configuration.getName() );
+        for( Dependency dep : depProjectConfig.getAllDependencies() )
+        {
+            if( ProjectDependency.class.isAssignableFrom( dep.getClass() ) )
+            {
+                recordProjectDependency( (ProjectDependency) dep );
+            }
+        }
+    }
+
+    private boolean isProjectDependency( ResolvedDependency dependency )
+    {
+        // return projectDependencies.contains( gavOf( dependency ) );
         for( Gav projectDep : projectDependencies )
         {
-            if( dep.getModuleGroup().equals( projectDep.getGroupId() )
-                && dep.getModuleName().equals( projectDep.getArtifactId() )
-                && dep.getModuleVersion().equals( projectDep.getVersion() ) )
+            if( dependency.getModuleGroup().equals( projectDep.getGroupId() )
+                && dependency.getModuleName().equals( projectDep.getArtifactId() )
+                && dependency.getModuleVersion().equals( projectDep.getVersion() ) )
             {
                 return true;
             }
@@ -82,20 +106,48 @@ public class GradleDepTreeLoader
         return false;
     }
 
+    private static Gav gavOf( Dependency dependency )
+    {
+        return new Gav( dependency.getGroup(), dependency.getName(), dependency.getVersion() );
+    }
+
+    private static Gav gavOf( ResolvedDependency dependency )
+    {
+        return new Gav( dependency.getModuleGroup(), dependency.getModuleName(), dependency.getModuleVersion() );        
+    }
+
     @Override
     public DepTree load()
     {
-        List<DepTreeNode> rootNodes = new ArrayList<>();
-        for( ResolvedDependency dep : configuration.getResolvedConfiguration().getFirstLevelModuleDependencies() )
+        try
         {
-            rootNodes.add( createRootNode( dep ) );
+            List<DepTreeNode> rootNodes = new ArrayList<>();
+            for( ResolvedDependency dep : configuration.getResolvedConfiguration().getFirstLevelModuleDependencies() )
+            {
+                DepTreeNode rootNode = createRootNode( dep );
+                if( rootNode != null )
+                {
+                    rootNodes.add( rootNode );
+                }
+            }
+            return new DepTree( rootNodes );
         }
-        return new DepTree( rootNodes );
+        finally
+        {
+            loaded.clear();
+        } 
     }
 
     private DepTreeNode createRootNode( ResolvedDependency dependency )
     {
+        Gav gav = gavOf( dependency );
+        if( loaded.contains( gav ) )
+        {
+            // Prevent infinite recursion
+            return null;
+        }
         DepTreeNode node = new DepTreeNode( gatherDependencyData( dependency ) );
+        loaded.add( gav );
         for( ResolvedDependency child : dependency.getChildren() )
         {
             createNode( node, child );
@@ -105,7 +157,14 @@ public class GradleDepTreeLoader
 
     private void createNode( DepTreeNode parentNode, ResolvedDependency dependency )
     {
+        Gav gav = gavOf( dependency );
+        if( loaded.contains( gav ) )
+        {
+            // Prevent infinite recursion
+            return;
+        }
         DepTreeNode node = new DepTreeNode( parentNode, gatherDependencyData( dependency ) );
+        loaded.add( gav );
         for( ResolvedDependency child : dependency.getChildren() )
         {
             createNode( node, child );

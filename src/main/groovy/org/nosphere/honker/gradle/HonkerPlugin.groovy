@@ -19,6 +19,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.artifacts.ProjectDependency;
 import org.gradle.api.plugins.JavaPlugin
 
 import org.nosphere.honker.License
@@ -70,6 +71,10 @@ class HonkerPlugin implements Plugin<Project> {
             // License declaration is mandatory
             if(proj.honker.license && !License.valueOfLicenseName( proj.honker.license )) {
                 throw new GradleException( "Invalid/unknown project's license: '$proj.honker.license'" );
+            }
+            // Multi-modules support: depends on dependent modules tasks
+            genDependenciesTask.configuration.allDependencies.findAll({it instanceof ProjectDependency}).each { pDep ->
+                genDependenciesTask.dependsOn pDep.dependencyProject.tasks['jar']
             }
         }
     }
