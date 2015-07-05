@@ -129,6 +129,29 @@ public final class DepTreeManifestLoader
         }
         String url = attr.getValue( "Bundle-DocURL" );
         String license = attr.getValue( "Bundle-License" );
+        if( license != null && license.contains( ";" ) )
+        {
+            String[] licenseItems = license.split( ";" );
+            for( String licenseItem : licenseItems )
+            {
+                String trimmed = licenseItem.trim();
+                if( !trimmed.contains( "=" ) )
+                {
+                    license = trimmed;
+                    break;
+                }
+                if( trimmed.startsWith( "link=" ) )
+                {
+                    trimmed = trimmed.substring( 5, trimmed.length() );
+                    if( trimmed.startsWith( "\"" ) || trimmed.startsWith( "'" ) )
+                    {
+                        trimmed = trimmed.substring( 1, trimmed.length() - 1 );
+                    }
+                    license = trimmed;
+                    break;
+                }
+            }
+        }
         return new DepTreeData.Manifest( name, version, vendor, url, license );
     }
 }
