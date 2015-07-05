@@ -43,7 +43,7 @@ class HonkerCheckTask extends DefaultTask {
         def noLic = presenceVisitor.artifactsWithoutLicense()
         if( !noLic.isEmpty() ) {
             errors += noLic.collect {
-                "  $it.coordinates licensing data not found"
+                "  $it.coordinates no licensing data could be found"
             }
         }
 
@@ -56,7 +56,7 @@ class HonkerCheckTask extends DefaultTask {
             def conflicts = conflictVisitor.conflicts
             if(!conflicts.isEmpty()) {
                 errors += conflicts.collect {
-                    "  $it.coordinates ${it.detectedLicenses.collect{ "'$it.preferedName'" }.join('/')} licensed conflicts with the '$lic.preferedName' license"
+                    "  $it.coordinates ${it.detectedLicenses.collect{ it.preferedName }.join(' / ')} conflicts with $lic.preferedName"
                 }
             }
         }

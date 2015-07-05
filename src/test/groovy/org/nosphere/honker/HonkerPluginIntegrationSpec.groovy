@@ -85,8 +85,8 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
         wasExecuted('honkerCheck')
         result.standardError.contains('Execution failed for task \':honkerCheck\'.')
         result.standardError.contains('License check failures: 2')
-        result.standardError.contains('mysql:mysql-connector-java:5.1.35:jar \'GNU General Public License\' licensed conflicts with the \'The Apache Software License, Version 2.0\' license')
-        result.standardError.contains('org.antlr:stringtemplate:3.2.1:jar licensing data not found')
+        result.standardError.contains('mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0')
+        result.standardError.contains('org.antlr:stringtemplate:3.2.1:jar no licensing data could be found')
     }
 
     def 'honkerGenAll generate DEPENDENCIES, LICENSE and NOTICE files that are present in JAR'() {
