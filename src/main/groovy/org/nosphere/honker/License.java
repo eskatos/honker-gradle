@@ -301,9 +301,15 @@ public enum License
         asList(
             "Common Development and Distribution License",
             "CDDL",
-            "Common Development and Distribution License (CDDL)"
+            "Common Development and Distribution License (CDDL)",
+            "CDDL License",
+            "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0"
         ),
-        asList( "http://opensource.org/licenses/CDDL-1.0" )
+        asList(
+            "http://opensource.org/licenses/CDDL-1.0",
+            "http://www.opensource.org/licenses/cddl1.php",
+            "https://glassfish.dev.java.net/public/CDDLv1.0.html"
+        )
     ),
     GPL(
         asList(
@@ -350,14 +356,16 @@ public enum License
             "GNU \"Lesser\" General Public License",
             "GNU \"Lesser\" General Public License (LGPL)",
             "GNU Library or \"Lesser\" General Public License",
-            "GNU Library or \"Lesser\" General Public License (LGPL)"
+            "GNU Library or \"Lesser\" General Public License (LGPL)",
+            "GNU Lesser Public License"
         ),
         asList(
             "http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html",
             "http://www.opensource.org/licenses/lgpl-license",
             "http://www.opensource.org/licenses/lgpl-license.php",
             "http://opensource.org/licenses/lgpl-license",
-            "http://opensource.org/licenses/lgpl-license.php"
+            "http://opensource.org/licenses/lgpl-license.php",
+            "http://www.gnu.org/licenses/lgpl.html"
         )
     ),
     AGPL(
@@ -410,6 +418,14 @@ public enum License
         ),
         asList(
             "http://www.osgi.org/Specifications/Licensing"
+        )
+    ),
+    PUBLIC_DOMAIN(
+        asList(
+            "Public Domain"
+        ),
+        asList(
+            "https://creativecommons.org/licenses/publicdomain/"
         )
     );
 
@@ -528,7 +544,8 @@ public enum License
         apache2Conflicts.removeAll( EnumSet.of(
             // Licenses compatible with Apache 2
             APACHE_2, APACHE_1_1, PHP_3_1, BSD_2_CLAUSES, BSD_3_CLAUSES,
-            MIT_X11, ICU, UoL_NCSA, W3C, ZLIB, AFL, MS_PL, CC_A, PYTHON, BSL, EDL, WTFPL, RUBY, CPL
+            MIT_X11, ICU, UoL_NCSA, W3C, ZLIB, AFL, MS_PL, CC_A, PYTHON, BSL, EDL, WTFPL, RUBY, CPL,
+            PUBLIC_DOMAIN, CDDL
         ) );
         conflicts.put( APACHE_2, apache2Conflicts );
         CONFLICTS = conflicts;
