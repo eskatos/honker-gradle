@@ -29,7 +29,7 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
     def build = '''
             apply plugin: 'org.nosphere.honker'
             honker {
-                license = 'Apache License 2.0'
+                license 'Apache License 2.0'
             }
             sourceSets {
                 main {

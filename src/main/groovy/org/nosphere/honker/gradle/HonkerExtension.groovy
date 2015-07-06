@@ -24,6 +24,22 @@ public class HonkerExtension {
     String projectTimespan
     String projectOrganization
 
+    void license( String license ) {
+        this.license = license
+    }
+
+    void projectName( String projectName ) {
+        this.projectName = projectName
+    }
+
+    void projectTimespan( String projectTimespan ) {
+        this.projectTimespan = projectTimespan
+    }
+
+    void projectOrganization( String projectOrganization ) {
+        this.projectOrganization = projectOrganization
+    }
+
     private final Project project
 
     public HonkerExtension( Project project ) {
