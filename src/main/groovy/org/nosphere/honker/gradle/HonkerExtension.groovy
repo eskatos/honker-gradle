@@ -16,6 +16,9 @@
 package org.nosphere.honker.gradle;
 
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Dependency
+
+import org.nosphere.honker.deptree.Gav
 
 public class HonkerExtension {
 
@@ -23,6 +26,7 @@ public class HonkerExtension {
     String projectName
     String projectTimespan
     String projectOrganization
+    Map<Gav,String> overrides = [:]
 
     void license( String license ) {
         this.license = license
@@ -38,6 +42,21 @@ public class HonkerExtension {
 
     void projectOrganization( String projectOrganization ) {
         this.projectOrganization = projectOrganization
+    }
+
+    void override( Map<String,Object> namedArgs, String license ) {
+        Dependency dependency = project.dependencies.create( namedArgs )
+        overrides.put( HonkerUtils.gavOf( dependency ) , license )
+    }
+
+    void override( String module, String license ) {
+        Dependency dependency = project.dependencies.create( module )
+        overrides.put( HonkerUtils.gavOf( dependency ) , license )
+    }
+
+    public Map<Gav,String> getOverrides()
+    {
+        return overrides
     }
 
     private final Project project

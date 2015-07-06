@@ -202,7 +202,7 @@ public class GradleDepTreeLoader
             Arrays.asList( new DepTreeData.PomLicense( lic.getPreferedName(), lic.getPreferedUrl(), null, null ) )
         );
 
-        return new DepTreeData.Artifact( extractCoordinates( artifact ), DepTreeData.Manifest.EMPTY, pom, null );
+        return new DepTreeData.Artifact( extractCoordinates( artifact ), DepTreeData.Manifest.EMPTY, pom, null, null );
     }
 
     private DepTreeData gatherExternalDependencyData( ResolvedDependency dependency )
@@ -218,12 +218,17 @@ public class GradleDepTreeLoader
 
     private DepTreeData.Artifact gatherExternalArtifactData( ResolvedArtifact artifact )
     {
+        HonkerExtension ext = (HonkerExtension) project.getExtensions().getByName( "honker" );
         Gav gav = HonkerUtils.gavOf( artifact );
         String coordinates = extractCoordinates( artifact );
         DepTreeData.Manifest manifest = manifestLoader.load( artifact.getFile() );
         DepTreeData.Pom pom = pomLoader.load( artifact.getFile(), gav );
         List<DepTreeData.SomeFile> licenseFiles = licenseFilesLoader.load( artifact.getFile() );
-        return new DepTreeData.Artifact( coordinates, manifest, pom, licenseFiles );
+        String overridenLicense = null;
+        if( ext.getOverrides() != null ) {
+            overridenLicense = ext.getOverrides().get( gav );
+        }
+        return new DepTreeData.Artifact( coordinates, manifest, pom, licenseFiles, overridenLicense );
     }
 
     private static String extractCoordinates( ResolvedArtifact artifact )

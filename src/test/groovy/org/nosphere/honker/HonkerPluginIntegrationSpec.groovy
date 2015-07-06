@@ -118,4 +118,23 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
         noticeText.contains 'Copyright 2015 The Apache Software Foundation'
         noticeText.contains 'This product includes software developed at'
     }
+
+    def 'dependency license override'() {
+        setup:
+        fork=true
+        buildFile << build + '''
+        honker {
+            override 'asm:asm:3.1', 'BSD 3-Clause License'
+        }
+        '''.stripIndent()
+
+        when:
+        ExecutionResult result = runTasksWithFailure('honkerCheck')
+
+        then:
+        wasExecuted('honkerCheck')
+        result.standardError.contains('Execution failed for task \':honkerCheck\'.')
+        result.standardError.contains('mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0')
+        !result.standardError.contains('asm:asm:3.1:jar no licensing data could be found')
+    }
 }

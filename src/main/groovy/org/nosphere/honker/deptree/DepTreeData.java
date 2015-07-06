@@ -92,9 +92,14 @@ public final class DepTreeData
         private final Manifest manifest;
         private final Pom pom;
         private final Set<SomeFile> licenseFiles = new LinkedHashSet<>();
+        private final String overridenLicense;
         private final Set<License> detectedLicenses = new LinkedHashSet<>();
 
-        public Artifact( String coordinates, Manifest manifest, Pom pom, Collection<SomeFile> licenseFiles )
+        public Artifact( String coordinates,
+                         Manifest manifest,
+                         Pom pom,
+                         Collection<SomeFile> licenseFiles,
+                         String overridenLicense )
         {
             this.coordinates = coordinates;
             this.manifest = manifest;
@@ -103,6 +108,7 @@ public final class DepTreeData
             {
                 this.licenseFiles.addAll( licenseFiles );
             }
+            this.overridenLicense = overridenLicense;
             detectLicenses();
         }
 
@@ -130,6 +136,16 @@ public final class DepTreeData
                 {
                     detectedLicenses.add( urlLicense );
                 }
+            }
+            License ovLicense = License.valueOfLicenseName( overridenLicense );
+            if( ovLicense != null )
+            {
+                detectedLicenses.add( ovLicense );
+            }
+            License ovLicenseUrl = License.valueOfLicenseUrl( overridenLicense );
+            if( ovLicenseUrl != null )
+            {
+                detectedLicenses.add( ovLicenseUrl );
             }
         }
 
