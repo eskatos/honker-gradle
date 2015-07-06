@@ -94,13 +94,15 @@ public enum License
             "New BSD License",
             "Revised BSD License",
             "BSD 3-Clause",
-            "BSD 3-Clause \"New\" or \"Revised\" license"
+            "BSD 3-Clause \"New\" or \"Revised\" license",
+            "Aduna BSD license"
         ),
         asList(
             "http://opensource.org/licenses/BSD-3-Clause",
             "http://asm.objectweb.org/license.html",
             "http://asm.ow2.org/license.html",
-            "http://antlr.org/license.html"
+            "http://antlr.org/license.html",
+            "https://bitbucket.org/openrdf/sesame/src/master/core/LICENSE.txt"
         )
     ),
     BSD_2_CLAUSES(
@@ -111,7 +113,8 @@ public enum License
             "Simplified BSD License"
         ),
         asList(
-            "http://opensource.org/licenses/BSD-2-Clause"
+            "http://opensource.org/licenses/BSD-2-Clause",
+            "http://www.opensource.org/licenses/bsd-license.html"
         )
     ),
     MIT_X11(
@@ -121,13 +124,17 @@ public enum License
             "X11",
             "X11 License",
             "MIT/X Consortium License",
-            "Expat License"
+            "Expat License",
+            "Bouncy Castle Licence",
+            "The PostgreSQL License"
         ),
         asList(
             "http://opensource.org/licenses/MIT",
             "http://www.opensource.org/licenses/MIT",
             "http://opensource.org/licenses/mit-license.php",
-            "http://www.opensource.org/licenses/mit-license.php"
+            "http://www.opensource.org/licenses/mit-license.php",
+            "https://www.bouncycastle.org/licence.html",
+            "http://www.postgresql.org/about/licence/"
         )
     ),
     ICU(
@@ -295,9 +302,13 @@ public enum License
     MOZILLA(
         asList(
             "Mozilla Public License 2.0",
-            "MPL"
+            "MPL",
+            "Mozilla Public License, Version 2.0"
         ),
-        asList( "http://opensource.org/licenses/MPL-2.0" )
+        asList(
+            "http://opensource.org/licenses/MPL-2.0",
+            "http://www.mozilla.org/MPL/2.0/index.txt"
+        )
     ),
     CDDL(
         asList(
@@ -311,6 +322,14 @@ public enum License
             "http://opensource.org/licenses/CDDL-1.0",
             "http://www.opensource.org/licenses/cddl1.php",
             "https://glassfish.dev.java.net/public/CDDLv1.0.html"
+        )
+    ),
+    CDDL_GPLv2_CLASSPATH_EXCEPTION(
+        asList(
+            "CDDL + GPLv2 with classpath exception"
+        ),
+        asList(
+            "https://glassfish.dev.java.net/nonav/public/CDDL+GPL.html"
         )
     ),
     GPL(
@@ -555,7 +574,7 @@ public enum License
             // Licenses compatible with Apache 2
             APACHE_2, APACHE_1_1, PHP_3_1, BSD_2_CLAUSES, BSD_3_CLAUSES,
             MIT_X11, ICU, UoL_NCSA, W3C, ZLIB, AFL, MS_PL, CC_A, PYTHON, BSL, EDL, WTFPL, RUBY, CPL,
-            PUBLIC_DOMAIN, CDDL, JSON
+            PUBLIC_DOMAIN, CDDL, CDDL_GPLv2_CLASSPATH_EXCEPTION, JSON, MOZILLA
         ) );
         conflicts.put( APACHE_2, apache2Conflicts );
         CONFLICTS = conflicts;
