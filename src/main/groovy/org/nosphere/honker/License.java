@@ -44,6 +44,7 @@ public enum License
             "Apache License, version 2.0.",
             "Apache License, version 2.0",
             "Apache Software License 2.0",
+            "Apache License Version 2.0",
             "Apache License 2.0"
         ),
         asList(
@@ -98,7 +99,8 @@ public enum License
         asList(
             "http://opensource.org/licenses/BSD-3-Clause",
             "http://asm.objectweb.org/license.html",
-            "http://asm.ow2.org/license.html"
+            "http://asm.ow2.org/license.html",
+            "http://antlr.org/license.html"
         )
     ),
     BSD_2_CLAUSES(
@@ -420,6 +422,14 @@ public enum License
             "http://www.osgi.org/Specifications/Licensing"
         )
     ),
+    JSON(
+        asList(
+            "The JSON License"
+        ),
+        asList(
+            "http://www.json.org/license.html"
+        )
+    ),
     PUBLIC_DOMAIN(
         asList(
             "Public Domain"
@@ -545,7 +555,7 @@ public enum License
             // Licenses compatible with Apache 2
             APACHE_2, APACHE_1_1, PHP_3_1, BSD_2_CLAUSES, BSD_3_CLAUSES,
             MIT_X11, ICU, UoL_NCSA, W3C, ZLIB, AFL, MS_PL, CC_A, PYTHON, BSL, EDL, WTFPL, RUBY, CPL,
-            PUBLIC_DOMAIN, CDDL
+            PUBLIC_DOMAIN, CDDL, JSON
         ) );
         conflicts.put( APACHE_2, apache2Conflicts );
         CONFLICTS = conflicts;
