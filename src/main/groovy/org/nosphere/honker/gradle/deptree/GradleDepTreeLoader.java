@@ -41,6 +41,7 @@ import org.nosphere.honker.deptree.DepTreeNode;
 import org.nosphere.honker.deptree.DepTreePomLoader;
 import org.nosphere.honker.deptree.Gav;
 import org.nosphere.honker.gradle.HonkerExtension;
+import org.nosphere.honker.gradle.HonkerUtils;
 
 public class GradleDepTreeLoader
     implements DepTreeLoader
@@ -93,7 +94,7 @@ public class GradleDepTreeLoader
 
     private boolean isProjectDependency( ResolvedDependency dependency )
     {
-        // return projectDependencies.contains( gavOf( dependency ) );
+        // return projectDependencies.contains( HonkerUtils.gavOf( dependency ) );
         for( Gav projectDep : projectDependencies )
         {
             if( dependency.getModuleGroup().equals( projectDep.getGroupId() )
@@ -104,16 +105,6 @@ public class GradleDepTreeLoader
             }
         }
         return false;
-    }
-
-    private static Gav gavOf( Dependency dependency )
-    {
-        return new Gav( dependency.getGroup(), dependency.getName(), dependency.getVersion() );
-    }
-
-    private static Gav gavOf( ResolvedDependency dependency )
-    {
-        return new Gav( dependency.getModuleGroup(), dependency.getModuleName(), dependency.getModuleVersion() );        
     }
 
     @Override
@@ -140,7 +131,7 @@ public class GradleDepTreeLoader
 
     private DepTreeNode createRootNode( ResolvedDependency dependency )
     {
-        Gav gav = gavOf( dependency );
+        Gav gav = HonkerUtils.gavOf( dependency );
         if( loaded.contains( gav ) )
         {
             // Prevent infinite recursion
@@ -157,7 +148,7 @@ public class GradleDepTreeLoader
 
     private void createNode( DepTreeNode parentNode, ResolvedDependency dependency )
     {
-        Gav gav = gavOf( dependency );
+        Gav gav = HonkerUtils.gavOf( dependency );
         if( loaded.contains( gav ) )
         {
             // Prevent infinite recursion
@@ -227,16 +218,10 @@ public class GradleDepTreeLoader
 
     private DepTreeData.Artifact gatherExternalArtifactData( ResolvedArtifact artifact )
     {
+        Gav gav = HonkerUtils.gavOf( artifact );
         String coordinates = extractCoordinates( artifact );
         DepTreeData.Manifest manifest = manifestLoader.load( artifact.getFile() );
-        DepTreeData.Pom pom = pomLoader.load(
-            artifact.getFile(),
-            new Gav(
-                artifact.getModuleVersion().getId().getGroup(),
-                artifact.getModuleVersion().getId().getName(),
-                artifact.getModuleVersion().getId().getVersion()
-            )
-        );
+        DepTreeData.Pom pom = pomLoader.load( artifact.getFile(), gav );
         List<DepTreeData.SomeFile> licenseFiles = licenseFilesLoader.load( artifact.getFile() );
         return new DepTreeData.Artifact( coordinates, manifest, pom, licenseFiles );
     }
