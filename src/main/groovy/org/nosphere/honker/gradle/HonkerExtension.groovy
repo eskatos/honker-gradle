@@ -15,6 +15,8 @@
  */
 package org.nosphere.honker.gradle;
 
+import groovy.lang.Closure;
+
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 
@@ -26,7 +28,7 @@ public class HonkerExtension {
     String projectName
     String projectTimespan
     String projectOrganization
-    Map<Gav,String> overrides = [:]
+    List<Closure> licenseOverrides = []
 
     void license( String license ) {
         this.license = license
@@ -44,19 +46,14 @@ public class HonkerExtension {
         this.projectOrganization = projectOrganization
     }
 
-    void override( Map<String,Object> namedArgs, String license ) {
-        Dependency dependency = project.dependencies.create( namedArgs )
-        overrides.put( HonkerUtils.gavOf( dependency ) , license )
-    }
-
-    void override( String module, String license ) {
-        Dependency dependency = project.dependencies.create( module )
-        overrides.put( HonkerUtils.gavOf( dependency ) , license )
-    }
-
-    public Map<Gav,String> getOverrides()
+    void licenseOverride( Closure closure )
     {
-        return overrides
+        licenseOverrides.add( closure )
+    }
+
+    public List<Closure> getLicenseOverrides()
+    {
+        return licenseOverrides
     }
 
     private final Project project

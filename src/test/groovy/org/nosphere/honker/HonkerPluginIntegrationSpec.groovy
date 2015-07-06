@@ -124,7 +124,11 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
         fork=true
         buildFile << build + '''
         honker {
-            override 'asm:asm:3.1', 'BSD 3-Clause License'
+            licenseOverride { candidate ->
+                if( candidate.group == 'asm' && candidate.module == 'asm' ) {
+                    candidate.license = 'BSD 3-Clause'
+                }
+            }
         }
         '''.stripIndent()
 

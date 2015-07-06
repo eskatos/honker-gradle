@@ -22,6 +22,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import groovy.lang.Closure;
+
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
@@ -41,6 +43,7 @@ import org.nosphere.honker.deptree.DepTreeNode;
 import org.nosphere.honker.deptree.DepTreePomLoader;
 import org.nosphere.honker.deptree.Gav;
 import org.nosphere.honker.gradle.HonkerExtension;
+import org.nosphere.honker.gradle.HonkerLicenseOverrideCandidate;
 import org.nosphere.honker.gradle.HonkerUtils;
 
 public class GradleDepTreeLoader
@@ -225,8 +228,18 @@ public class GradleDepTreeLoader
         DepTreeData.Pom pom = pomLoader.load( artifact.getFile(), gav );
         List<DepTreeData.SomeFile> licenseFiles = licenseFilesLoader.load( artifact.getFile() );
         String overridenLicense = null;
-        if( ext.getOverrides() != null ) {
-            overridenLicense = ext.getOverrides().get( gav );
+        if( ext.getLicenseOverrides() != null )
+        {
+            for( Closure strategy : ext.getLicenseOverrides() )
+            {
+                HonkerLicenseOverrideCandidate candidate = new HonkerLicenseOverrideCandidate( gav );
+                strategy.call( candidate );
+                if( candidate.getLicense() != null )
+                {
+                    overridenLicense = candidate.getLicense();
+                    break;
+                }
+            }
         }
         return new DepTreeData.Artifact( coordinates, manifest, pom, licenseFiles, overridenLicense );
     }
