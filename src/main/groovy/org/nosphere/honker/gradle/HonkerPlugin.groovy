@@ -36,7 +36,7 @@ class HonkerPlugin implements Plugin<Project> {
         if( !project.plugins.hasPlugin(JavaPlugin) ) {
             project.plugins.apply(JavaPlugin)
         }
-        project.extensions.create( 'honker', HonkerExtension )
+        project.extensions.create( 'honker', HonkerExtension, project )
         Task reportTask = project.task(
             'honkerReport',
             type: HonkerReportTask,
