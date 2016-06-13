@@ -46,7 +46,7 @@ dependencies {
     compile 'commons-lang:commons-lang:2.6'
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'com.google.guava:guava:18.0'
-    testCompile 'com.netflix.nebula:nebula-test:2.2.1', {
+    testCompile 'com.netflix.nebula:nebula-test:4.2.2', {
         exclude module: 'groovy-all'
     }
 }
@@ -67,6 +67,7 @@ check.dependsOn honkerCheck
 
 rat {
     excludes += [
+        'README.md',
         '.gradletasknamecache', 'gradle/wrapper/**', 'gradlew*', 'build/**', // Gradle
         '.nb-gradle/**', '*.iml', '*.ipr', '*.iws', // IDEs
         '**/*.template' // Templates

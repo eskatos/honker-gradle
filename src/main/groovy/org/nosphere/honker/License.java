@@ -270,12 +270,14 @@ public enum License
             "EPL",
             "EPL 1.0",
             "Eclipse Public License",
-            "Eclipse Public License - v 1.0"
+            "Eclipse Public License - v 1.0",
+            "Eclipse Public License Version 1.0"
         ),
         asList(
             "http://www.eclipse.org/legal/epl-v10.html",
             "http://opensource.org/licenses/EPL-1.0",
-            "http://www.opensource.org/licenses/EPL-1.0"
+            "http://www.opensource.org/licenses/EPL-1.0",
+            "http://opensource.org/licenses/eclipse-1.0.txt"
         )
     ),
     WTFPL(
@@ -573,7 +575,7 @@ public enum License
         apache2Conflicts.removeAll( EnumSet.of(
             // Licenses compatible with Apache 2
             APACHE_2, APACHE_1_1, PHP_3_1, BSD_2_CLAUSES, BSD_3_CLAUSES,
-            MIT_X11, ICU, UoL_NCSA, W3C, ZLIB, AFL, MS_PL, CC_A, PYTHON, BSL, EDL, WTFPL, RUBY, CPL,
+            MIT_X11, ICU, UoL_NCSA, W3C, ZLIB, AFL, MS_PL, CC_A, PYTHON, BSL, EDL, EPL, WTFPL, RUBY, CPL,
             PUBLIC_DOMAIN, CDDL, CDDL_GPLv2_CLASSPATH_EXCEPTION, JSON, MOZILLA
         ) );
         conflicts.put( APACHE_2, apache2Conflicts );

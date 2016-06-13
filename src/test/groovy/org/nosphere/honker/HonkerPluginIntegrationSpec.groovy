@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.gradle.licensing
+package org.nosphere.honker
 
 import nebula.test.IntegrationSpec
 import nebula.test.functional.ExecutionResult
@@ -49,8 +49,8 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
                 compile 'org.ow2.asm:asm:5.0.4'
                 compile 'joda-time:joda-time:2.3'
 
-                // CPL & BSD_3_CLAUSES
-                compile 'junit:junit:4.11'
+                // EPL
+                compile 'junit:junit:4.12'
 
                 // GPL- Conflict
                 compile 'mysql:mysql-connector-java:5.1.35'
@@ -115,7 +115,7 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
         wasExecuted('honkerGenNotice')
         fileExists('build/generated-resources/notice/META-INF/NOTICE.txt')
         def noticeText = file('build/generated-resources/notice/META-INF/NOTICE.txt').text
-        noticeText.contains 'Copyright 2015 The Apache Software Foundation'
+        noticeText.contains "Copyright ${Calendar.getInstance().get(Calendar.YEAR)} The Apache Software Foundation"
         noticeText.contains 'This product includes software developed at'
     }
 
