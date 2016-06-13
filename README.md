@@ -13,7 +13,7 @@ Build script snippet for use in all Gradle versions:
         }
       }
       dependencies {
-        classpath "gradle.plugin.org.nosphere.honker:honker-gradle:0.2.1"
+        classpath "gradle.plugin.org.nosphere.honker:honker-gradle:0.2.2"
       }
     }
 
@@ -22,7 +22,7 @@ Build script snippet for use in all Gradle versions:
 Build script snippet for new, incubating, plugin mechanism introduced in Gradle 2.1:
 
     plugins {
-      id "org.nosphere.honker" version "0.2.1"
+      id "org.nosphere.honker" version "0.2.2"
     }
 
 
