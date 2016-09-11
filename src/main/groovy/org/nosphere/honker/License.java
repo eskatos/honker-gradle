@@ -453,10 +453,16 @@ public enum License
     ),
     PUBLIC_DOMAIN(
         asList(
-            "Public Domain"
+            "Public Domain",
+            "Public Domain, per Creative Commons CC0",
+            "CC0 1.0 Universal"
         ),
         asList(
-            "https://creativecommons.org/licenses/publicdomain/"
+            "https://creativecommons.org/licenses/publicdomain/",
+            "http://creativecommons.org/publicdomain/zero/1.0/",
+            "https://creativecommons.org/publicdomain/zero/1.0/",
+            "http://creativecommons.org/publicdomain/mark/1.0/",
+            "https://creativecommons.org/publicdomain/mark/1.0/"
         )
     );
 
