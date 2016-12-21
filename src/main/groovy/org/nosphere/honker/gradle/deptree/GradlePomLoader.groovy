@@ -13,30 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nosphere.honker.gradle.deptree;
+package org.nosphere.honker.gradle.deptree
 
-import java.io.File;
-import java.util.Enumeration;
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
+import com.google.common.cache.LoadingCache
+import com.google.common.collect.ImmutableMap
+import groovy.util.slurpersupport.GPathResult
 import java.util.concurrent.atomic.AtomicLong
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import groovy.util.XmlSlurper;
-import groovy.util.slurpersupport.GPathResult;
-
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import org.apache.commons.io.FilenameUtils
+import org.apache.commons.io.IOUtils
+import org.apache.commons.lang.StringUtils
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.ResolvedArtifact;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableMap;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-
+import org.gradle.api.artifacts.ResolvedArtifact
 import org.nosphere.honker.deptree.DepTreeData
 import org.nosphere.honker.deptree.DepTreeData.Pom
 import org.nosphere.honker.deptree.DepTreePomLoader

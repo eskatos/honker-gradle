@@ -13,54 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nosphere.honker.gradle;
+package org.nosphere.honker.gradle
 
 import groovy.text.SimpleTemplateEngine
-
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-
 import org.nosphere.honker.License
 
 /**
  * NOTICE Generation Task.
  */
+@CompileStatic
 class HonkerGenNoticeTask extends DefaultTask {
 
     @Optional @Input
-    def File template = null
+    File template = null
 
     @Optional @Input
-    def String header
+    String header
 
     @Optional @Input
-    def String footer
+    String footer
     
     @OutputDirectory
-    def File outputDir = project.file( "$project.buildDir/generated-resources/notice" )
+    File outputDir = project.file( "$project.buildDir/generated-resources/notice" )
 
     @Input
-    def String resourcePath = 'META-INF/NOTICE.txt'
+    String resourcePath = 'META-INF/NOTICE.txt'
 
     @TaskAction
     void generate()
     {
-        def File target = new File( outputDir, resourcePath )
+        def honker = project.extensions.getByType HonkerExtension
+        File target = new File( outputDir, resourcePath )
         target.parentFile.mkdirs()
 
-        def lic = License.valueOfLicenseName( project.honker.license )
+        def lic = License.valueOfLicenseName( honker.license )
         def templateText = template?.exists() ? template.text : lic.noticeTemplate()
         if( templateText ) {
 
             def binding = [
-                'projectName': project.honker.projectName ?: project.name,
-                'projectTimespan': project.honker.projectTimespan ?: "${Calendar.getInstance().get( Calendar.YEAR )}",
-                'projectOrganization': project.honker.projectOrganization,
+                'projectName': honker.projectName ?: project.name,
+                'projectTimespan': honker.projectTimespan ?: "${Calendar.getInstance().get( Calendar.YEAR )}",
+                'projectOrganization': honker.projectOrganization,
                 'header': header, 'footer': footer
             ]
             target.text = new SimpleTemplateEngine().createTemplate( templateText ).make( binding ).toString()

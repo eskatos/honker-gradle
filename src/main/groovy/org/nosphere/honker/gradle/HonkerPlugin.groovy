@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nosphere.honker.gradle;
+package org.nosphere.honker.gradle
 
+import groovy.transform.CompileStatic;
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -30,6 +31,7 @@ import org.nosphere.honker.License
  * Crawls dependencies for licensing information, detects ambiguities and conflicts,
  * generates LICENSE, NOTICE and DEPENDENCIES files.
  */
+@CompileStatic
 class HonkerPlugin implements Plugin<Project> {
 
     void apply(Project project) {
@@ -61,19 +63,23 @@ class HonkerPlugin implements Plugin<Project> {
             group: 'Honker',
             description: 'Generate project\'s NOTICE file.'
         )
-        Task genDependenciesTask = project.task(
+        HonkerGenDependenciesTask genDependenciesTask = project.task(
             'honkerGenDependencies',
             type: HonkerGenDependenciesTask,
             group: 'Honker',
             description: 'Generate project\'s DEPENDENCIES file.'
-        )
-        project.afterEvaluate { proj ->
+        ) as HonkerGenDependenciesTask
+        project.afterEvaluate { Project proj ->
             // License declaration is mandatory
-            if(proj.honker.license && !License.valueOfLicenseName( proj.honker.license )) {
-                throw new GradleException( "Invalid/unknown project's license: '$proj.honker.license'" );
+            def honker = proj.extensions.getByType HonkerExtension
+            if(honker.license && !License.valueOfLicenseName( honker.license )) {
+                throw new GradleException( "Invalid/unknown project's license: '$honker.license'" );
             }
             // Multi-modules support: depends on dependent modules tasks
-            genDependenciesTask.configuration.allDependencies.findAll({it instanceof ProjectDependency}).each { pDep ->
+            genDependenciesTask.configuration.allDependencies
+                               .findAll({it instanceof ProjectDependency})
+                               .collect {(ProjectDependency)it}
+                               .each { ProjectDependency pDep ->
                 genDependenciesTask.dependsOn pDep.dependencyProject.tasks['jar']
             }
         }

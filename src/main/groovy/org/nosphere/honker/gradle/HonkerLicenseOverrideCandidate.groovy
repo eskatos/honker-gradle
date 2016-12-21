@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nosphere.honker.gradle;
+package org.nosphere.honker.gradle
 
+import groovy.transform.CompileStatic;
 import org.nosphere.honker.deptree.Gav;
 
-public class HonkerLicenseOverrideCandidate {
+@CompileStatic
+class HonkerLicenseOverrideCandidate {
 
     private final Gav gav;
     private String license;

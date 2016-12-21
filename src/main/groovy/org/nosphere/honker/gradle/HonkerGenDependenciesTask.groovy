@@ -15,44 +15,47 @@
  */
 package org.nosphere.honker.gradle
 
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-
+import org.nosphere.honker.deptree.DepTreeData
 import org.nosphere.honker.gradle.deptree.GradleDepTreeLoader
 import org.nosphere.honker.visitors.DependenciesByOrganizationsVisitor
 
 /**
  * DEPENDENCIES Generation Task.
  */
+@CompileStatic
 class HonkerGenDependenciesTask extends DefaultTask {
 
     @Input
-    def configuration = project.configurations.runtime
+    Configuration configuration = project.configurations.getByName 'runtime'
 
     @Optional @Input
-    def String header
+    String header
 
     @Optional @Input
-    def String footer
+    String footer
 
     @OutputDirectory
-    def File outputDir = project.file( "$project.buildDir/generated-resources/dependencies" )
+    File outputDir = project.file( "$project.buildDir/generated-resources/dependencies" )
 
     @Input
-    def String resourcePath = 'META-INF/DEPENDENCIES.txt'
+    String resourcePath = 'META-INF/DEPENDENCIES.txt'
 
     @TaskAction
     void generate()
     {
+        def honker = project.extensions.getByType HonkerExtension
         def depTree = new GradleDepTreeLoader( project, configuration ).load()
         def depsVisitor = new DependenciesByOrganizationsVisitor()
         depTree.accept( depsVisitor )
 
-        def File target = new File( outputDir, resourcePath )
+        File target = new File( outputDir, resourcePath )
         target.parentFile.mkdirs()
 
         def dependencies = depsVisitor.dependenciesByOrganizations
@@ -66,11 +69,11 @@ class HonkerGenDependenciesTask extends DefaultTask {
             // build dependencies listed by organization.
             // ------------------------------------------------------------------
 
-            ${project.honker.projectName ?: project.name}
+            ${honker.projectName ?: project.name}
 
             """.stripIndent()
         dependencies.keySet().each { orgName ->
-            def artifacts = dependencies[orgName]
+            Set<DepTreeData.Artifact> artifacts = dependencies[ orgName]
             def orgUrl = artifacts.iterator()[0].organizationUrl
             depsText += "\nFrom: $orgName ${orgUrl ? "- $orgUrl" : ''}\n\n"
             artifacts.each { artifact ->

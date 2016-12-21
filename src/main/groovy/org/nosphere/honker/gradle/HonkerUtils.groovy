@@ -15,12 +15,14 @@
  */
 package org.nosphere.honker.gradle
 
+import groovy.transform.CompileStatic
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.ResolvedDependency
 
 import org.nosphere.honker.deptree.Gav
 
+@CompileStatic
 class HonkerUtils {
 
     public static Gav gavOf( Dependency dependency )

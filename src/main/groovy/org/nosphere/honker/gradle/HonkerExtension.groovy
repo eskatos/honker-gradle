@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nosphere.honker.gradle;
+package org.nosphere.honker.gradle
 
-import groovy.lang.Closure;
-
+import groovy.transform.CompileStatic
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Dependency
 
-import org.nosphere.honker.deptree.Gav
-
+@CompileStatic
 public class HonkerExtension {
 
     String license

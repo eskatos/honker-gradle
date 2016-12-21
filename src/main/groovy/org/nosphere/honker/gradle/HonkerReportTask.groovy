@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.nosphere.honker.gradle;
+package org.nosphere.honker.gradle
 
+import groovy.transform.CompileStatic;
 import org.gradle.api.DefaultTask
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 
 import org.nosphere.honker.gradle.deptree.GradleDepTreeLoader
 import org.nosphere.honker.visitors.LicensingReportVisitor
 
+@CompileStatic
 class HonkerReportTask extends DefaultTask {
 
     @Input
-    def configuration = project.configurations.runtime
+    Configuration configuration = project.configurations.getByName( 'runtime' )
 
     @TaskAction
     void report()
