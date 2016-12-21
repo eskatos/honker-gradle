@@ -16,6 +16,7 @@
 package org.nosphere.honker.gradle
 
 import groovy.transform.CompileStatic
+import org.gradle.api.Action
 import org.gradle.api.Project
 
 @CompileStatic
@@ -26,7 +27,7 @@ class HonkerExtension
   String projectName
   String projectTimespan
   String projectOrganization
-  List<Closure> licenseOverrides = [ ]
+  List<Action<HonkerLicenseOverrideCandidate>> licenseOverrides = [ ]
 
   void license( String license )
   {
@@ -48,12 +49,12 @@ class HonkerExtension
     this.projectOrganization = projectOrganization
   }
 
-  void licenseOverride( Closure closure )
+  void licenseOverride( Action<HonkerLicenseOverrideCandidate> action )
   {
-    licenseOverrides.add( closure )
+    licenseOverrides.add( action )
   }
 
-  List<Closure> getLicenseOverrides()
+  List<Action<HonkerLicenseOverrideCandidate>> getLicenseOverrides()
   {
     return licenseOverrides
   }

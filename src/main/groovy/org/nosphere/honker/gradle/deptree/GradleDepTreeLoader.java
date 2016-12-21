@@ -24,6 +24,7 @@ import java.util.Set;
 
 import groovy.lang.Closure;
 
+import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
@@ -230,10 +231,10 @@ public class GradleDepTreeLoader
         String overridenLicense = null;
         if( ext.getLicenseOverrides() != null )
         {
-            for( Closure strategy : ext.getLicenseOverrides() )
+            for( Action<HonkerLicenseOverrideCandidate> strategy : ext.getLicenseOverrides() )
             {
                 HonkerLicenseOverrideCandidate candidate = new HonkerLicenseOverrideCandidate( gav );
-                strategy.call( candidate );
+                strategy.execute( candidate );
                 if( candidate.getLicense() != null )
                 {
                     overridenLicense = candidate.getLicense();
