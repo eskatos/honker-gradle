@@ -74,13 +74,6 @@ class HonkerPlugin implements Plugin<Project>
       {
         throw new GradleException( "Invalid/unknown project's license: '$honker.license'" );
       }
-      // Multi-modules support: depends on dependent modules tasks
-      genDependenciesTask.configuration.allDependencies
-                         .findAll( { it instanceof ProjectDependency } )
-                         .collect { ( ProjectDependency ) it }
-                         .each { ProjectDependency pDep ->
-        genDependenciesTask.dependsOn pDep.dependencyProject.tasks[ 'jar' ]
-      }
     }
   }
 }
