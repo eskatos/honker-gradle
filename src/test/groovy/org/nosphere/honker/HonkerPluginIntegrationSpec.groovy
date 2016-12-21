@@ -24,9 +24,10 @@ import nebula.test.functional.ExecutionResult
 /**
  * Honker Plugin IntegrationSpec.
  */
-class HonkerPluginIntegrationSpec extends IntegrationSpec {
+class HonkerPluginIntegrationSpec extends IntegrationSpec
+{
 
-    def build = '''
+  def build = '''
             apply plugin: 'org.nosphere.honker'
             honker {
                 license 'Apache License 2.0'
@@ -64,65 +65,69 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
             }
         '''.stripIndent()
 
-    def 'runs honkerReport'() {
-        setup:
-        fork = true
-        buildFile << build
-        
-        when:
-        ExecutionResult result = runTasksSuccessfully('honkerReport')
+  def 'runs honkerReport'()
+  {
+    setup:
+    fork = true
+    buildFile << build
 
-        then:
-        wasExecuted('honkerReport')
-    }
+    when:
+    ExecutionResult result = runTasksSuccessfully 'honkerReport'
 
-    def 'honkerCheck failures'() {
-        setup:
-        fork=true
-        buildFile << build
+    then:
+    result.wasExecuted 'honkerReport'
+  }
 
-        when:
-        ExecutionResult result = runTasksWithFailure('honkerCheck')
+  def 'honkerCheck failures'()
+  {
+    setup:
+    fork = true
+    buildFile << build
 
-        then:
-        wasExecuted('honkerCheck')
-        result.standardError.contains('Execution failed for task \':honkerCheck\'.')
-        result.standardError.contains('License check failures: 2')
-        result.standardError.contains('mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0')
-        result.standardError.contains('asm:asm:3.1:jar no licensing data could be found')
-    }
+    when:
+    ExecutionResult result = runTasksWithFailure 'honkerCheck'
 
-    def 'honkerGenAll generate DEPENDENCIES, LICENSE and NOTICE files that are present in JAR'() {
-        setup:
-        fork=true
-        buildFile << build
+    then:
+    result.wasExecuted 'honkerCheck'
+    result.standardError.contains 'Execution failed for task \':honkerCheck\'.'
+    result.standardError.contains 'License check failures: 2'
+    result.standardError.contains 'mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0'
+    result.standardError.contains 'asm:asm:3.1:jar no licensing data could be found'
+  }
 
-        when:
-        ExecutionResult result = runTasksSuccessfully('jar')
+  def 'honkerGenAll generate DEPENDENCIES, LICENSE and NOTICE files that are present in JAR'()
+  {
+    setup:
+    fork = true
+    buildFile << build
 
-        then:
+    when:
+    ExecutionResult result = runTasksSuccessfully 'jar'
 
-        wasExecuted('honkerGenDependencies')
-        fileExists('build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt')
-        def dependenciesText = file('build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt').text
-        dependenciesText.contains 'From: France Telecom R&D'
+    then:
 
-        wasExecuted('honkerGenLicense')
-        fileExists('build/generated-resources/license/META-INF/LICENSE.txt')
-        def licenseText = file('build/generated-resources/license/META-INF/LICENSE.txt').text
-        licenseText.contains 'TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION'
+    result.wasExecuted 'honkerGenDependencies'
+    fileExists 'build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt'
+    def dependenciesText = file( 'build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' ).text
+    dependenciesText.contains 'From: France Telecom R&D'
 
-        wasExecuted('honkerGenNotice')
-        fileExists('build/generated-resources/notice/META-INF/NOTICE.txt')
-        def noticeText = file('build/generated-resources/notice/META-INF/NOTICE.txt').text
-        noticeText.contains "Copyright ${Calendar.getInstance().get(Calendar.YEAR)} The Apache Software Foundation"
-        noticeText.contains 'This product includes software developed at'
-    }
+    result.wasExecuted 'honkerGenLicense'
+    fileExists 'build/generated-resources/license/META-INF/LICENSE.txt'
+    def licenseText = file( 'build/generated-resources/license/META-INF/LICENSE.txt' ).text
+    licenseText.contains 'TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION'
 
-    def 'dependency license override'() {
-        setup:
-        fork=true
-        buildFile << build + '''
+    result.wasExecuted 'honkerGenNotice'
+    fileExists 'build/generated-resources/notice/META-INF/NOTICE.txt'
+    def noticeText = file( 'build/generated-resources/notice/META-INF/NOTICE.txt' ).text
+    noticeText.contains "Copyright ${ Calendar.getInstance().get( Calendar.YEAR ) } The Apache Software Foundation"
+    noticeText.contains 'This product includes software developed at'
+  }
+
+  def 'dependency license override'()
+  {
+    setup:
+    fork = true
+    buildFile << build + '''
         honker {
             licenseOverride { candidate ->
                 if( candidate.group == 'asm' && candidate.module == 'asm' ) {
@@ -132,13 +137,13 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
         }
         '''.stripIndent()
 
-        when:
-        ExecutionResult result = runTasksWithFailure('honkerCheck')
+    when:
+    ExecutionResult result = runTasksWithFailure 'honkerCheck'
 
-        then:
-        wasExecuted('honkerCheck')
-        result.standardError.contains('Execution failed for task \':honkerCheck\'.')
-        result.standardError.contains('mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0')
-        !result.standardError.contains('asm:asm:3.1:jar no licensing data could be found')
-    }
+    then:
+    result.wasExecuted 'honkerCheck'
+    result.standardError.contains 'Execution failed for task \':honkerCheck\'.'
+    result.standardError.contains 'mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0'
+    !result.standardError.contains( 'asm:asm:3.1:jar no licensing data could be found' )
+  }
 }

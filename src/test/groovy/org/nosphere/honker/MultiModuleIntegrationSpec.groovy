@@ -78,8 +78,8 @@ class MultiModuleIntegrationSpec extends IntegrationSpec {
         ExecutionResult result = runTasksSuccessfully( 'honkerReport' )
 
         then:
-        wasExecuted( 'api:honkerReport' )
-        wasExecuted( 'core:honkerReport' )
+        result.wasExecuted 'api:honkerReport'
+        result.wasExecuted 'core:honkerReport'
     }
 
     def 'runs honkerGenDependencies'() {
@@ -95,13 +95,13 @@ class MultiModuleIntegrationSpec extends IntegrationSpec {
 
         then:
 
-        wasExecuted( 'api:honkerGenDependencies' )
+        result.wasExecuted 'api:honkerGenDependencies'
         fileExists( 'api/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' )
         def apiDeps = file( 'api/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' ).text
         println "==== api ====\n$apiDeps\n========"
         apiDeps.contains 'org.slf4j:slf4j-api'
-        
-        wasExecuted( 'core:honkerGenDependencies' )
+
+        result.wasExecuted 'core:honkerGenDependencies'
         fileExists( 'core/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' )
         def coreDeps = file( 'core/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' ).text
         println "==== core ====\n$coreDeps\n========"
