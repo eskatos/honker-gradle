@@ -28,45 +28,50 @@ import org.nosphere.honker.License
  * NOTICE Generation Task.
  */
 @CompileStatic
-class HonkerGenNoticeTask extends DefaultTask {
+class HonkerGenNoticeTask extends DefaultTask
+{
 
-    @Optional @Input
-    File template = null
+  @Optional
+  @Input
+  File template = null
 
-    @Optional @Input
-    String header
+  @Optional
+  @Input
+  String header
 
-    @Optional @Input
-    String footer
-    
-    @OutputDirectory
-    File outputDir = project.file( "$project.buildDir/generated-resources/notice" )
+  @Optional
+  @Input
+  String footer
 
-    @Input
-    String resourcePath = 'META-INF/NOTICE.txt'
+  @OutputDirectory
+  File outputDir = project.file "$project.buildDir/generated-resources/notice"
 
-    @TaskAction
-    void generate()
+  @Input
+  String resourcePath = 'META-INF/NOTICE.txt'
+
+  @TaskAction
+  void generate()
+  {
+    def honker = project.extensions.getByType HonkerExtension
+    File target = new File( outputDir, resourcePath )
+    target.parentFile.mkdirs()
+
+    def lic = License.valueOfLicenseName honker.license
+    def templateText = template?.exists() ? template.text : lic.noticeTemplate()
+    if( templateText )
     {
-        def honker = project.extensions.getByType HonkerExtension
-        File target = new File( outputDir, resourcePath )
-        target.parentFile.mkdirs()
-
-        def lic = License.valueOfLicenseName( honker.license )
-        def templateText = template?.exists() ? template.text : lic.noticeTemplate()
-        if( templateText ) {
-
-            def binding = [
-                'projectName': honker.projectName ?: project.name,
-                'projectTimespan': honker.projectTimespan ?: "${Calendar.getInstance().get( Calendar.YEAR )}",
-                'projectOrganization': honker.projectOrganization,
-                'header': header, 'footer': footer
-            ]
-            target.text = new SimpleTemplateEngine().createTemplate( templateText ).make( binding ).toString()
-            project.logger.info "Generated NOTICE file into $target.absolutePath"
-
-        } else {
-            project.logger.warn 'No NOTICE template, no NOTICE file will be generated'
-        }
+      def binding = [
+        'projectName'        : honker.projectName ?: project.name,
+        'projectTimespan'    : honker.projectTimespan ?: "${ Calendar.getInstance().get( Calendar.YEAR ) }",
+        'projectOrganization': honker.projectOrganization,
+        'header'             : header, 'footer': footer
+      ]
+      target.text = new SimpleTemplateEngine().createTemplate( templateText ).make( binding ).toString()
+      project.logger.info "Generated NOTICE file into $target.absolutePath"
     }
+    else
+    {
+      project.logger.warn 'No NOTICE template, no NOTICE file will be generated'
+    }
+  }
 }

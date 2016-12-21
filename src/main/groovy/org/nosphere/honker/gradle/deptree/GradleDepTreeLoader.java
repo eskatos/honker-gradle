@@ -129,7 +129,7 @@ public class GradleDepTreeLoader
         finally
         {
             loaded.clear();
-        } 
+        }
     }
 
     private DepTreeNode createRootNode( ResolvedDependency dependency )
@@ -248,7 +248,7 @@ public class GradleDepTreeLoader
     {
         StringBuilder coordinates = new StringBuilder();
         coordinates.append( artifact.getModuleVersion().getId().toString() )
-            .append( ':' ).append( artifact.getType() );
+                   .append( ':' ).append( artifact.getType() );
         if( !StringUtils.isEmpty( artifact.getClassifier() ) )
         {
             coordinates.append( ':' ).append( artifact.getClassifier() );

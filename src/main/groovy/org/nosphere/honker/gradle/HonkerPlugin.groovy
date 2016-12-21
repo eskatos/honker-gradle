@@ -32,58 +32,61 @@ import org.nosphere.honker.License
  * generates LICENSE, NOTICE and DEPENDENCIES files.
  */
 @CompileStatic
-class HonkerPlugin implements Plugin<Project> {
+class HonkerPlugin implements Plugin<Project>
+{
 
-    void apply(Project project) {
-        if( !project.plugins.hasPlugin(JavaPlugin) ) {
-            project.plugins.apply(JavaPlugin)
-        }
-        project.extensions.create( 'honker', HonkerExtension, project )
-        Task reportTask = project.task(
-            'honkerReport',
-            type: HonkerReportTask,
-            group: 'Honker',
-            description: 'Report dependencies licensing.'
-        )
-        Task checkTask = project.task(
-            'honkerCheck',
-            type: HonkerCheckTask,
-            group: 'Honker',
-            description: 'Check for dependencies licensing issues (missing and conflicts).'
-        )
-        Task genLicenseTask = project.task(
-            'honkerGenLicense',
-            type: HonkerGenLicenseTask,
-            group: 'Honker',
-            description: 'Generate project\'s LICENSE file.'
-        )
-        Task genNoticeTask = project.task(
-            'honkerGenNotice',
-            type: HonkerGenNoticeTask,
-            group: 'Honker',
-            description: 'Generate project\'s NOTICE file.'
-        )
-        HonkerGenDependenciesTask genDependenciesTask = project.task(
-            'honkerGenDependencies',
-            type: HonkerGenDependenciesTask,
-            group: 'Honker',
-            description: 'Generate project\'s DEPENDENCIES file.'
-        ) as HonkerGenDependenciesTask
-        project.afterEvaluate { Project proj ->
-            // License declaration is mandatory
-            def honker = proj.extensions.getByType HonkerExtension
-            if(honker.license && !License.valueOfLicenseName( honker.license )) {
-                throw new GradleException( "Invalid/unknown project's license: '$honker.license'" );
-            }
-            // Multi-modules support: depends on dependent modules tasks
-            genDependenciesTask.configuration.allDependencies
-                               .findAll({it instanceof ProjectDependency})
-                               .collect {(ProjectDependency)it}
-                               .each { ProjectDependency pDep ->
-                genDependenciesTask.dependsOn pDep.dependencyProject.tasks['jar']
-            }
-        }
+  void apply( Project project )
+  {
+    if( !project.plugins.hasPlugin( JavaPlugin ) )
+    {
+      project.plugins.apply JavaPlugin
     }
-
+    project.extensions.create 'honker', HonkerExtension, project
+    Task reportTask = project.task(
+      'honkerReport',
+      type: HonkerReportTask,
+      group: 'Honker',
+      description: 'Report dependencies licensing.'
+    )
+    Task checkTask = project.task(
+      'honkerCheck',
+      type: HonkerCheckTask,
+      group: 'Honker',
+      description: 'Check for dependencies licensing issues (missing and conflicts).'
+    )
+    Task genLicenseTask = project.task(
+      'honkerGenLicense',
+      type: HonkerGenLicenseTask,
+      group: 'Honker',
+      description: 'Generate project\'s LICENSE file.'
+    )
+    Task genNoticeTask = project.task(
+      'honkerGenNotice',
+      type: HonkerGenNoticeTask,
+      group: 'Honker',
+      description: 'Generate project\'s NOTICE file.'
+    )
+    HonkerGenDependenciesTask genDependenciesTask = project.task(
+      'honkerGenDependencies',
+      type: HonkerGenDependenciesTask,
+      group: 'Honker',
+      description: 'Generate project\'s DEPENDENCIES file.'
+    ) as HonkerGenDependenciesTask
+    project.afterEvaluate { Project proj ->
+      // License declaration is mandatory
+      def honker = proj.extensions.getByType HonkerExtension
+      if( honker.license && !License.valueOfLicenseName( honker.license ) )
+      {
+        throw new GradleException( "Invalid/unknown project's license: '$honker.license'" );
+      }
+      // Multi-modules support: depends on dependent modules tasks
+      genDependenciesTask.configuration.allDependencies
+                         .findAll( { it instanceof ProjectDependency } )
+                         .collect { ( ProjectDependency ) it }
+                         .each { ProjectDependency pDep ->
+        genDependenciesTask.dependsOn pDep.dependencyProject.tasks[ 'jar' ]
+      }
+    }
+  }
 }
 

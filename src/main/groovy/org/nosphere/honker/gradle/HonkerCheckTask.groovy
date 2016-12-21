@@ -28,47 +28,53 @@ import org.nosphere.honker.visitors.LicenseConflictVisitor
 import org.nosphere.honker.visitors.LicensePresenceVisitor
 
 @CompileStatic
-class HonkerCheckTask extends DefaultTask {
+class HonkerCheckTask extends DefaultTask
+{
+  @Input
+  Configuration configuration = project.configurations.getByName 'runtime'
 
-    @Input
-    Configuration configuration = project.configurations.getByName 'runtime'
+  @TaskAction
+  void check()
+  {
+    def honker = project.extensions.getByType HonkerExtension
+    def depTree = new GradleDepTreeLoader( project, configuration ).load()
 
-    @TaskAction
-    void check()
+    def errors = [ ] as List<String>
+
+    // Ensure no artifact without license
+    def presenceVisitor = new LicensePresenceVisitor()
+    depTree.accept presenceVisitor
+    def noLic = presenceVisitor.artifactsWithoutLicense()
+    if( !noLic.isEmpty() )
     {
-        def honker = project.extensions.getByType HonkerExtension
-        def depTree = new GradleDepTreeLoader( project, configuration ).load()
-
-        def errors = [] as List<String>
-
-        // Ensure no artifact without license
-        def presenceVisitor = new LicensePresenceVisitor()
-        depTree.accept( presenceVisitor )
-        def noLic = presenceVisitor.artifactsWithoutLicense()
-        if( !noLic.isEmpty() ) {
-            errors.addAll noLic.collect {
-                "  $it.coordinates no licensing data could be found".toString()
-            }
-        }
-
-        if( honker.license ) {
-            def lic = License.valueOfLicenseName( honker.license )
-
-            // Ensure no artifact with licensing conflict
-            def conflictVisitor = new LicenseConflictVisitor( lic )
-            depTree.accept( conflictVisitor )
-            def conflicts = conflictVisitor.conflicts()
-            if(!conflicts.isEmpty()) {
-                errors.addAll conflicts.collect {
-                    "  $it.coordinates ${it.detectedLicenses.collect{ it.preferedName }.join(' / ')} conflicts with $lic.preferedName".toString()
-                }
-            }
-        }
-
-        if( errors ) {
-            if( errors.size() == 1 ) throw new GradleException( errors[0] )
-            throw new GradleException( "License check failures: ${errors.size()}\n" + errors.join('\n') )
-        }
+      errors.addAll noLic.collect {
+        "  $it.coordinates no licensing data could be found".toString()
+      }
     }
 
+    if( honker.license )
+    {
+      def lic = License.valueOfLicenseName honker.license
+
+      // Ensure no artifact with licensing conflict
+      def conflictVisitor = new LicenseConflictVisitor( lic )
+      depTree.accept conflictVisitor
+      def conflicts = conflictVisitor.conflicts()
+      if( !conflicts.isEmpty() )
+      {
+        errors.addAll conflicts.collect {
+          "  $it.coordinates ${ it.detectedLicenses.collect { it.preferedName }.join( ' / ' ) } conflicts with $lic.preferedName".toString()
+        }
+      }
+    }
+
+    if( errors )
+    {
+      if( errors.size() == 1 )
+      {
+        throw new GradleException( errors[ 0 ] )
+      }
+      throw new GradleException( "License check failures: ${ errors.size() }\n" + errors.join( '\n' ) )
+    }
+  }
 }

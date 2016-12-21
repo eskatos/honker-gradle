@@ -19,43 +19,49 @@ import groovy.transform.CompileStatic
 import org.gradle.api.Project
 
 @CompileStatic
-public class HonkerExtension {
+class HonkerExtension
+{
 
-    String license
-    String projectName
-    String projectTimespan
-    String projectOrganization
-    List<Closure> licenseOverrides = []
+  String license
+  String projectName
+  String projectTimespan
+  String projectOrganization
+  List<Closure> licenseOverrides = [ ]
 
-    void license( String license ) {
-        this.license = license
-    }
+  void license( String license )
+  {
+    this.license = license
+  }
 
-    void projectName( String projectName ) {
-        this.projectName = projectName
-    }
+  void projectName( String projectName )
+  {
+    this.projectName = projectName
+  }
 
-    void projectTimespan( String projectTimespan ) {
-        this.projectTimespan = projectTimespan
-    }
+  void projectTimespan( String projectTimespan )
+  {
+    this.projectTimespan = projectTimespan
+  }
 
-    void projectOrganization( String projectOrganization ) {
-        this.projectOrganization = projectOrganization
-    }
+  void projectOrganization( String projectOrganization )
+  {
+    this.projectOrganization = projectOrganization
+  }
 
-    void licenseOverride( Closure closure )
-    {
-        licenseOverrides.add( closure )
-    }
+  void licenseOverride( Closure closure )
+  {
+    licenseOverrides.add( closure )
+  }
 
-    public List<Closure> getLicenseOverrides()
-    {
-        return licenseOverrides
-    }
+  List<Closure> getLicenseOverrides()
+  {
+    return licenseOverrides
+  }
 
-    private final Project project
+  private final Project project
 
-    public HonkerExtension( Project project ) {
-        this.project = project
-    }
+  HonkerExtension( Project project )
+  {
+    this.project = project
+  }
 }

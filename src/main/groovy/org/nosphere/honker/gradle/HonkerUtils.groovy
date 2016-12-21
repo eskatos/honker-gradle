@@ -23,28 +23,29 @@ import org.gradle.api.artifacts.ResolvedDependency
 import org.nosphere.honker.deptree.Gav
 
 @CompileStatic
-class HonkerUtils {
+class HonkerUtils
+{
 
-    public static Gav gavOf( Dependency dependency )
-    {
-        return new Gav( dependency.getGroup(), dependency.getName(), dependency.getVersion() )
-    }
+  static Gav gavOf( Dependency dependency )
+  {
+    return new Gav( dependency.getGroup(), dependency.getName(), dependency.getVersion() )
+  }
 
-    public static Gav gavOf( ResolvedDependency dependency )
-    {
-        return new Gav( dependency.getModuleGroup(), dependency.getModuleName(), dependency.getModuleVersion() )       
-    }
+  static Gav gavOf( ResolvedDependency dependency )
+  {
+    return new Gav( dependency.getModuleGroup(), dependency.getModuleName(), dependency.getModuleVersion() )
+  }
 
-    public static Gav gavOf( ResolvedArtifact artifact )
-    {
-        return new Gav(
-            artifact.getModuleVersion().getId().getGroup(),
-            artifact.getModuleVersion().getId().getName(),
-            artifact.getModuleVersion().getId().getVersion()
-        )        
-    }
+  static Gav gavOf( ResolvedArtifact artifact )
+  {
+    return new Gav(
+      artifact.getModuleVersion().getId().getGroup(),
+      artifact.getModuleVersion().getId().getName(),
+      artifact.getModuleVersion().getId().getVersion()
+    )
+  }
 
-    private HonkerUtils()
-    {
-    }
+  private HonkerUtils()
+  {
+  }
 }

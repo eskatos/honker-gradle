@@ -25,22 +25,21 @@ import org.nosphere.honker.gradle.deptree.GradleDepTreeLoader
 import org.nosphere.honker.visitors.LicensingReportVisitor
 
 @CompileStatic
-class HonkerReportTask extends DefaultTask {
+class HonkerReportTask extends DefaultTask
+{
+  @Input
+  Configuration configuration = project.configurations.getByName 'runtime'
 
-    @Input
-    Configuration configuration = project.configurations.getByName( 'runtime' )
+  @TaskAction
+  void report()
+  {
+    def depTree = new GradleDepTreeLoader( project, configuration ).load()
+    def visitor = new LicensingReportVisitor();
 
-    @TaskAction
-    void report()
-    {
-        def depTree = new GradleDepTreeLoader( project, configuration ).load()
-        def visitor = new LicensingReportVisitor();
-
-        println "------------------------------------------------------------------------------------------------------"
-        println ""
-        depTree.accept( visitor );
-        println ""
-        println "------------------------------------------------------------------------------------------------------"
-    }
-
+    println "------------------------------------------------------------------------------------------------------"
+    println ""
+    depTree.accept( visitor );
+    println ""
+    println "------------------------------------------------------------------------------------------------------"
+  }
 }

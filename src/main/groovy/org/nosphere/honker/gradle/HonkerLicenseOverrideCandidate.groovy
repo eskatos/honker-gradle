@@ -19,37 +19,38 @@ import groovy.transform.CompileStatic;
 import org.nosphere.honker.deptree.Gav;
 
 @CompileStatic
-class HonkerLicenseOverrideCandidate {
+class HonkerLicenseOverrideCandidate
+{
+  private final Gav gav;
+  private String license;
 
-    private final Gav gav;
-    private String license;
+  HonkerLicenseOverrideCandidate( Gav gav )
+  {
+    this.gav = gav;
+  }
 
-    public HonkerLicenseOverrideCandidate( Gav gav ) {
-        this.gav = gav;
-    }
+  String getGroup()
+  {
+    return gav.groupId;
+  }
 
-    public String getGroup()
-    {
-        return gav.groupId;
-    }
+  String getModule()
+  {
+    return gav.artifactId;
+  }
 
-    public String getModule()
-    {
-        return gav.artifactId;
-    }
+  String getVersion()
+  {
+    return gav.version;
+  }
 
-    public String getVersion()
-    {
-        return gav.version;
-    }
+  String getLicense()
+  {
+    return license;
+  }
 
-    public String getLicense()
-    {
-        return license;
-    }
-
-    public void setLicense( String license )
-    {
-        this.license = license;
-    }
+  void setLicense( String license )
+  {
+    this.license = license;
+  }
 }

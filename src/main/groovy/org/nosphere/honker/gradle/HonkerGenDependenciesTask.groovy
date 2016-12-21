@@ -30,63 +30,68 @@ import org.nosphere.honker.visitors.DependenciesByOrganizationsVisitor
  * DEPENDENCIES Generation Task.
  */
 @CompileStatic
-class HonkerGenDependenciesTask extends DefaultTask {
+class HonkerGenDependenciesTask extends DefaultTask
+{
 
-    @Input
-    Configuration configuration = project.configurations.getByName 'runtime'
+  @Input
+  Configuration configuration = project.configurations.getByName 'runtime'
 
-    @Optional @Input
-    String header
+  @Optional
+  @Input
+  String header
 
-    @Optional @Input
-    String footer
+  @Optional
+  @Input
+  String footer
 
-    @OutputDirectory
-    File outputDir = project.file( "$project.buildDir/generated-resources/dependencies" )
+  @OutputDirectory
+  File outputDir = project.file "$project.buildDir/generated-resources/dependencies"
 
-    @Input
-    String resourcePath = 'META-INF/DEPENDENCIES.txt'
+  @Input
+  String resourcePath = 'META-INF/DEPENDENCIES.txt'
 
-    @TaskAction
-    void generate()
+  @TaskAction
+  void generate()
+  {
+    def honker = project.extensions.getByType HonkerExtension
+    def depTree = new GradleDepTreeLoader( project, configuration ).load()
+    def depsVisitor = new DependenciesByOrganizationsVisitor()
+    depTree.accept depsVisitor
+
+    File target = new File( outputDir, resourcePath )
+    target.parentFile.mkdirs()
+
+    def dependencies = depsVisitor.dependenciesByOrganizations
+    def depsText = ''
+    if( header )
     {
-        def honker = project.extensions.getByType HonkerExtension
-        def depTree = new GradleDepTreeLoader( project, configuration ).load()
-        def depsVisitor = new DependenciesByOrganizationsVisitor()
-        depTree.accept( depsVisitor )
-
-        File target = new File( outputDir, resourcePath )
-        target.parentFile.mkdirs()
-
-        def dependencies = depsVisitor.dependenciesByOrganizations
-        def depsText = ''
-        if( header ) {
-            depsText += "$header\n"
-        }
-        depsText += """
+      depsText += "$header\n"
+    }
+    depsText += """
             // ------------------------------------------------------------------
             // Transitive dependencies of this project determined from the
             // build dependencies listed by organization.
             // ------------------------------------------------------------------
 
-            ${honker.projectName ?: project.name}
+            ${ honker.projectName ?: project.name }
 
             """.stripIndent()
-        dependencies.keySet().each { orgName ->
-            Set<DepTreeData.Artifact> artifacts = dependencies[ orgName]
-            def orgUrl = artifacts.iterator()[0].organizationUrl
-            depsText += "\nFrom: $orgName ${orgUrl ? "- $orgUrl" : ''}\n\n"
-            artifacts.each { artifact ->
-                depsText += "  - ${artifact.name} ${artifact.version} (${artifact.coordinates}) ${artifact.url}\n"
-                artifact.getDetectedLicenses().each { lic ->
-                    depsText += "    License: ${lic.preferedName} ${lic.preferedUrl ? "- ${lic.preferedUrl}" : ''}\n"
-                }
-            }
+    dependencies.keySet().each { orgName ->
+      Set<DepTreeData.Artifact> artifacts = dependencies[ orgName ]
+      def orgUrl = artifacts.iterator()[ 0 ].organizationUrl
+      depsText += "\nFrom: $orgName ${ orgUrl ? "- $orgUrl" : '' }\n\n"
+      artifacts.each { artifact ->
+        depsText += "  - ${ artifact.name } ${ artifact.version } (${ artifact.coordinates }) ${ artifact.url }\n"
+        artifact.getDetectedLicenses().each { lic ->
+          depsText += "    License: ${ lic.preferedName } ${ lic.preferedUrl ? "- ${ lic.preferedUrl }" : '' }\n"
         }
-        if( footer ) {
-            depsText += "\n$footer"
-        }
-        target.text = depsText
-        project.logger.info "Generated DEPENDENCIES file into $target.absolutePath"
+      }
     }
+    if( footer )
+    {
+      depsText += "\n$footer"
+    }
+    target.text = depsText
+    project.logger.info "Generated DEPENDENCIES file into $target.absolutePath"
+  }
 }

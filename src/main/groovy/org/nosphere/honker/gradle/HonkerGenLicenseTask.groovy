@@ -28,46 +28,51 @@ import org.nosphere.honker.License
  * LICENSE Generation Task.
  */
 @CompileStatic
-class HonkerGenLicenseTask extends DefaultTask {
+class HonkerGenLicenseTask extends DefaultTask
+{
 
-    @Optional @Input
-    File template = null
+  @Optional
+  @Input
+  File template = null
 
-    @Optional @Input
-    String header
+  @Optional
+  @Input
+  String header
 
-    @Optional @Input
-    String footer
+  @Optional
+  @Input
+  String footer
 
-    @OutputDirectory
-    File outputDir = project.file( "$project.buildDir/generated-resources/license" )
+  @OutputDirectory
+  File outputDir = project.file "$project.buildDir/generated-resources/license"
 
-    @Input
-    String resourcePath = 'META-INF/LICENSE.txt'
+  @Input
+  String resourcePath = 'META-INF/LICENSE.txt'
 
-    @TaskAction
-    void generate()
+  @TaskAction
+  void generate()
+  {
+    def honker = project.extensions.getByType HonkerExtension
+    File target = new File( outputDir, resourcePath )
+    target.parentFile.mkdirs()
+
+    def lic = License.valueOfLicenseName honker.license
+    def templateText = template?.exists() ? template.text : lic.licenseTemplate()
+    if( templateText )
     {
-        def honker = project.extensions.getByType HonkerExtension
-        File target = new File( outputDir, resourcePath )
-        target.parentFile.mkdirs()
 
-        def lic = License.valueOfLicenseName( honker.license )
-        def templateText = template?.exists() ? template.text : lic.licenseTemplate()
-        if( templateText ) {
-
-            def binding = [
-                'projectName': honker.projectName ?: project.name,
-                'projectTimespan': honker.projectTimespan ?: "${Calendar.getInstance().get( Calendar.YEAR )}",
-                'projectOrganization': honker.projectOrganization,
-                'header': header, 'footer': footer
-            ]
-            target.text = new SimpleTemplateEngine().createTemplate( templateText ).make( binding ).toString()
-            project.logger.info "Generated LICENSE file into $target.absolutePath"
-
-        } else {
-            project.logger.warn 'No LICENSE template, no LICENSE file will be generated'
-        }
+      def binding = [
+        'projectName'        : honker.projectName ?: project.name,
+        'projectTimespan'    : honker.projectTimespan ?: "${ Calendar.getInstance().get( Calendar.YEAR ) }",
+        'projectOrganization': honker.projectOrganization,
+        'header'             : header, 'footer': footer
+      ]
+      target.text = new SimpleTemplateEngine().createTemplate( templateText ).make( binding ).toString()
+      project.logger.info "Generated LICENSE file into $target.absolutePath"
     }
-
+    else
+    {
+      project.logger.warn 'No LICENSE template, no LICENSE file will be generated'
+    }
+  }
 }
