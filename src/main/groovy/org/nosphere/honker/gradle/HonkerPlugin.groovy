@@ -45,31 +45,26 @@ class HonkerPlugin implements Plugin<Project>
     Task reportTask = project.task(
       'honkerReport',
       type: HonkerReportTask,
-      group: 'Honker',
       description: 'Report dependencies licensing.'
     )
     Task checkTask = project.task(
       'honkerCheck',
       type: HonkerCheckTask,
-      group: 'Honker',
       description: 'Check for dependencies licensing issues (missing and conflicts).'
     )
     Task genLicenseTask = project.task(
       'honkerGenLicense',
       type: HonkerGenLicenseTask,
-      group: 'Honker',
       description: 'Generate project\'s LICENSE file.'
     )
     Task genNoticeTask = project.task(
       'honkerGenNotice',
       type: HonkerGenNoticeTask,
-      group: 'Honker',
       description: 'Generate project\'s NOTICE file.'
     )
     HonkerGenDependenciesTask genDependenciesTask = project.task(
       'honkerGenDependencies',
       type: HonkerGenDependenciesTask,
-      group: 'Honker',
       description: 'Generate project\'s DEPENDENCIES file.'
     ) as HonkerGenDependenciesTask
     project.afterEvaluate { Project proj ->
