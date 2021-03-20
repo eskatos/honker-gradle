@@ -19,9 +19,7 @@
 
 buildscript {
     repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        gradlePluginPortal()
     }
     dependencies {
         classpath "com.gradle.publish:plugin-publish-plugin:0.9.7"
@@ -39,7 +37,7 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
