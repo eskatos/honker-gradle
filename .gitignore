@@ -2,6 +2,7 @@
 .gradletasknamecache
 .nb-gradle
 build
-honker-gradle.iml
-honker-gradle.ipr
-honker-gradle.iws
+*.iml
+*.ipr
+*.iws
+.idea
