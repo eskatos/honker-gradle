@@ -19,7 +19,7 @@ import groovy.transform.CompileStatic;
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
 
 import org.nosphere.honker.License
@@ -30,7 +30,7 @@ import org.nosphere.honker.visitors.LicensePresenceVisitor
 @CompileStatic
 class HonkerCheckTask extends DefaultTask
 {
-  @Input
+  @InputFiles
   Configuration configuration = project.configurations.getByName 'runtime'
 
   @TaskAction
