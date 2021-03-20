@@ -20,6 +20,7 @@ package org.nosphere.honker
 
 import nebula.test.IntegrationSpec
 import nebula.test.functional.ExecutionResult
+import spock.lang.Unroll
 
 /**
  * Multi-module project Honker Plugin IntegrationSpec.
@@ -66,47 +67,57 @@ class MultiModuleIntegrationSpec extends IntegrationSpec {
         }
     '''.stripIndent()
 
-    def 'runs honkerReport'() {
+    @Unroll
+    def 'runs honkerReport (gradle=#testedGradleVersion)'() {
         setup:
         fork = true
+        gradleVersion = testedGradleVersion
         buildFile << build
-        createFile( 'settings.gradle' ) << settings
-        createFile( 'api/build.gradle' ) << apiBuild
-        createFile( 'core/build.gradle' ) << coreBuild
+        createFile('settings.gradle') << settings
+        createFile('api/build.gradle') << apiBuild
+        createFile('core/build.gradle') << coreBuild
 
         when:
-        ExecutionResult result = runTasksSuccessfully( 'honkerReport' )
+        ExecutionResult result = runTasksSuccessfully('honkerReport')
 
         then:
         result.wasExecuted 'api:honkerReport'
         result.wasExecuted 'core:honkerReport'
+
+        where:
+        testedGradleVersion << TestEnv.TESTED_GRADLE_VERSIONS
     }
 
-    def 'runs honkerGenDependencies'() {
+    @Unroll
+    def 'runs honkerGenDependencies (gradle=#testedGradleVersion)'() {
         setup:
         fork = true
+        gradleVersion = testedGradleVersion
         buildFile << build
-        createFile( 'settings.gradle' ) << settings
-        createFile( 'api/build.gradle' ) << apiBuild
-        createFile( 'core/build.gradle' ) << coreBuild
+        createFile('settings.gradle') << settings
+        createFile('api/build.gradle') << apiBuild
+        createFile('core/build.gradle') << coreBuild
 
         when:
-        ExecutionResult result = runTasksSuccessfully( 'honkerGenDependencies' )
+        ExecutionResult result = runTasksSuccessfully('honkerGenDependencies')
 
         then:
 
         result.wasExecuted 'api:honkerGenDependencies'
-        fileExists( 'api/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' )
-        def apiDeps = file( 'api/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' ).text
+        fileExists('api/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt')
+        def apiDeps = file('api/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt').text
         println "==== api ====\n$apiDeps\n========"
         apiDeps.contains 'org.slf4j:slf4j-api'
 
         result.wasExecuted 'core:honkerGenDependencies'
-        fileExists( 'core/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' )
-        def coreDeps = file( 'core/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt' ).text
+        fileExists('core/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt')
+        def coreDeps = file('core/build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt').text
         println "==== core ====\n$coreDeps\n========"
         coreDeps.contains 'org.slf4j:slf4j-api'
         coreDeps.contains 'acme:api'
+
+        where:
+        testedGradleVersion << TestEnv.TESTED_GRADLE_VERSIONS
     }
 }
 
