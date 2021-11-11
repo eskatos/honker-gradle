@@ -46,7 +46,7 @@ class MultiModuleIntegrationSpec extends IntegrationSpec {
                 }
             }
             */
-            repositories { jcenter() }
+            repositories { mavenCentral() }
         }
     '''.stripIndent()
 
@@ -57,13 +57,13 @@ class MultiModuleIntegrationSpec extends IntegrationSpec {
 
     def apiBuild = '''
         dependencies {
-            compile 'org.slf4j:slf4j-api:1.7.12'
+            implementation 'org.slf4j:slf4j-api:1.7.12'
         }
     '''.stripIndent()
 
     def coreBuild = '''
         dependencies {
-            compile project( ':api' )
+            implementation project( ':api' )
         }
     '''.stripIndent()
 

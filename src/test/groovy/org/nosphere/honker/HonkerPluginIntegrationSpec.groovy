@@ -40,27 +40,27 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
                 }
             }
             honkerGenNotice { footer = 'This product includes software developed at\\nThe Apache Software Foundation (http://www.apache.org/).\\n' }
-            repositories { jcenter() }
+            repositories { mavenCentral() }
             dependencies {
 
                 // MIT
-                compile 'org.slf4j:slf4j-api:1.7.12'
+                implementation 'org.slf4j:slf4j-api:1.7.12'
 
                 // APACHE_2
-                compile 'org.ow2.asm:asm:5.0.4'
-                compile 'joda-time:joda-time:2.3'
+                implementation 'org.ow2.asm:asm:5.0.4'
+                implementation 'joda-time:joda-time:2.3'
 
                 // EPL
-                compile 'junit:junit:4.12'
+                implementation 'junit:junit:4.12'
 
                 // GPL- Conflict
-                compile 'mysql:mysql-connector-java:5.1.35'
+                implementation 'mysql:mysql-connector-java:5.1.35'
 
                 // APACHE_2 - Complex License information in Manifest
-                compile 'org.osgi:org.osgi.core:4.2.0'
+                implementation 'org.osgi:org.osgi.core:4.2.0'
 
                 // No license data!
-                compile 'asm:asm:3.1'
+                implementation 'asm:asm:3.1'
 
             }
         '''.stripIndent()
