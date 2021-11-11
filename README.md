@@ -68,3 +68,12 @@ To hook it into the default `check` task:
         }
     }
 
+## Compatibility matrix
+
+| Plugin | Min Java | Min Gradle | Max Gradle | [Configuration Cache](https://docs.gradle.org/current/userguide/configuration_cache.html) | [Build Cache](https://docs.gradle.org/current/userguide/build_cache.html)
+| --- | --- | --- | --- | --- | ---
+| `0.4.0` | `1.8` | `5.x`  | `7.x` | 🔴 | 🟢
+| `0.3.2` | `1.8` | `5.x`  | `7.x` | 🔴 | 🟢
+| `0.2.3` | `1.7` | `2.14` | `6.x` | 🔴 | 🟢
+| `0.1.5` | `1.6` | `2.14` | `4.x` | 🔴 | 🟢
+
