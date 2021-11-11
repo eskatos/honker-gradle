@@ -28,7 +28,7 @@ import org.nosphere.honker.visitors.LicensingReportVisitor
 class HonkerReportTask extends DefaultTask
 {
   @InputFiles
-  Configuration configuration = project.configurations.getByName 'runtime'
+  Configuration configuration = project.configurations.getByName 'runtimeClasspath'
 
   @TaskAction
   void report()

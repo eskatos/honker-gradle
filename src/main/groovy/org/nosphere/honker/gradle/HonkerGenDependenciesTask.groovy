@@ -35,7 +35,7 @@ class HonkerGenDependenciesTask extends DefaultTask
 {
 
   @InputFiles
-  Configuration configuration = project.configurations.getByName 'runtime'
+  Configuration configuration = project.configurations.getByName 'runtimeClasspath'
 
   @Optional
   @Input

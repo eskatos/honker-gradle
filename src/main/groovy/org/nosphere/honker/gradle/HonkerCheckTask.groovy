@@ -31,7 +31,7 @@ import org.nosphere.honker.visitors.LicensePresenceVisitor
 class HonkerCheckTask extends DefaultTask
 {
   @InputFiles
-  Configuration configuration = project.configurations.getByName 'runtime'
+  Configuration configuration = project.configurations.getByName 'runtimeClasspath'
 
   @TaskAction
   void check()
