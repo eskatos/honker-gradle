@@ -19,5 +19,5 @@
 package org.nosphere.honker
 
 class TestEnv {
-    static String[] TESTED_GRADLE_VERSIONS = ['7.0', '7.6.1']
+    static String[] TESTED_GRADLE_VERSIONS = ['7.0', '7.6.1', '8.0']
 }
