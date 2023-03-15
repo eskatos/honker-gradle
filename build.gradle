@@ -17,20 +17,12 @@
  * under the License.
  */
 
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath "com.gradle.publish:plugin-publish-plugin:0.17.0"
-    }
-}
-
 plugins {
     id 'java-gradle-plugin'
     id 'groovy'
     id 'maven-publish'
-    id "org.nosphere.apache.rat" version "0.7.0"
+    id 'com.gradle.plugin-publish' version '0.17.0'
+    id "org.nosphere.apache.rat" version "0.8.0"
     id "org.nosphere.honker" version "0.3.2"
 }
 
@@ -39,22 +31,37 @@ repositories {
 }
 
 dependencies {
+
     implementation 'commons-lang:commons-lang:2.6'
     implementation 'org.apache.commons:commons-io:1.3.2'
     implementation 'com.google.guava:guava:18.0'
-    testImplementation 'com.netflix.nebula:nebula-test:10.1.1', {
-        exclude module: 'groovy-all'
-    }
+
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation localGroovy()
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+    withSourcesJar()
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+
+tasks.validatePlugins {
+    failOnWarning.set(true)
+    enableStricterValidation.set(true)
+}
 
 sourceSets {
     main {
-        output.dir( honkerGenDependencies.outputDir, builtBy: honkerGenDependencies )
-        output.dir( honkerGenLicense.outputDir, builtBy: honkerGenLicense )
-        output.dir( honkerGenNotice.outputDir, builtBy: honkerGenNotice )
+        output.dir(honkerGenDependencies.outputDir, builtBy: honkerGenDependencies)
+        output.dir(honkerGenLicense.outputDir, builtBy: honkerGenLicense)
+        output.dir(honkerGenNotice.outputDir, builtBy: honkerGenNotice)
     }
 }
 honkerGenNotice { footer = 'This product includes software developed at\nThe Apache Software Foundation (http://www.apache.org/).\n' }
@@ -63,15 +70,25 @@ check.dependsOn honkerCheck
 
 rat {
     excludes += [
-        'README.md',
-        '.gradletasknamecache', 'gradle/wrapper/**', 'gradlew*', 'build/**', // Gradle
-        '.nb-gradle/**', '*.iml', '*.ipr', '*.iws', // IDEs
-        '**/*.template' // Templates
+            'README.md',
+            '.gradletasknamecache', 'gradle/wrapper/**', 'gradlew*', 'build/**', // Gradle
+            '.nb-gradle/**', '*.iml', '*.ipr', '*.iws', '.idea/**', // IDEs
+            '**/*.template' // Templates
     ]
 }
 check.dependsOn rat
 
-apply plugin: "com.gradle.plugin-publish"
+gradlePlugin {
+    pluginSourceSet(sourceSets.main)
+    testSourceSets(sourceSets.test)
+    plugins {
+        honker {
+            id = "org.nosphere.honker"
+            implementationClass = "org.nosphere.honker.gradle.HonkerPlugin"
+        }
+    }
+}
+
 pluginBundle {
     website = 'https://github.com/eskatos/honker-gradle'
     vcsUrl = 'https://github.com/eskatos/honker-gradle'
@@ -82,7 +99,7 @@ pluginBundle {
         honkerPlugin {
             id = 'org.nosphere.honker'
             displayName = 'Honker Gradle Plugin'
-            tags = ['NOTICE','LICENSE','DEPENDENCIES']
+            tags = ['NOTICE', 'LICENSE', 'DEPENDENCIES']
         }
     }
 }
