@@ -31,7 +31,7 @@ import org.nosphere.honker.License
 /**
  * LICENSE Generation Task.
  */
-@DisableCachingByDefault(because = "untested")
+@DisableCachingByDefault(because = "inputs don't take artifact metadata into account")
 @CompileStatic
 class HonkerGenLicenseTask extends DefaultTask
 {

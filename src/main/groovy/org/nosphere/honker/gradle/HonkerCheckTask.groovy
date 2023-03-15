@@ -29,7 +29,7 @@ import org.nosphere.honker.gradle.deptree.GradleDepTreeLoader
 import org.nosphere.honker.visitors.LicenseConflictVisitor
 import org.nosphere.honker.visitors.LicensePresenceVisitor
 
-@DisableCachingByDefault(because = "untested")
+@DisableCachingByDefault(because = "inputs don't take artifact metadata into account")
 @CompileStatic
 class HonkerCheckTask extends DefaultTask
 {

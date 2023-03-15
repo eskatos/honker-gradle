@@ -33,7 +33,7 @@ import org.nosphere.honker.visitors.DependenciesByOrganizationsVisitor
 /**
  * DEPENDENCIES Generation Task.
  */
-@DisableCachingByDefault(because = "untested")
+@DisableCachingByDefault(because = "inputs don't take artifact metadata into account")
 @CompileStatic
 class HonkerGenDependenciesTask extends DefaultTask
 {

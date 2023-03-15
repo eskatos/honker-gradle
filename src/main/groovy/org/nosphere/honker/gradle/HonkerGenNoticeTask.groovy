@@ -31,7 +31,7 @@ import org.nosphere.honker.License
 /**
  * NOTICE Generation Task.
  */
-@DisableCachingByDefault(because = "untested")
+@DisableCachingByDefault(because = "inputs don't take artifact metadata into account")
 @CompileStatic
 class HonkerGenNoticeTask extends DefaultTask
 {
