@@ -22,18 +22,23 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import org.nosphere.honker.License
 
 /**
  * NOTICE Generation Task.
  */
+@DisableCachingByDefault(because = "untested")
 @CompileStatic
 class HonkerGenNoticeTask extends DefaultTask
 {
 
   @Optional
   @InputFile
+  @PathSensitive(PathSensitivity.NONE)
   File template = null
 
   @Optional

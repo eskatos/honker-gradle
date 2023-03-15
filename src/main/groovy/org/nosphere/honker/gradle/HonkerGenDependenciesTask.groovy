@@ -22,7 +22,10 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import org.nosphere.honker.deptree.DepTreeData
 import org.nosphere.honker.gradle.deptree.GradleDepTreeLoader
 import org.nosphere.honker.visitors.DependenciesByOrganizationsVisitor
@@ -30,11 +33,13 @@ import org.nosphere.honker.visitors.DependenciesByOrganizationsVisitor
 /**
  * DEPENDENCIES Generation Task.
  */
+@DisableCachingByDefault(because = "untested")
 @CompileStatic
 class HonkerGenDependenciesTask extends DefaultTask
 {
 
   @InputFiles
+  @PathSensitive(PathSensitivity.RELATIVE)
   Configuration configuration = project.configurations.getByName 'runtimeClasspath'
 
   @Optional

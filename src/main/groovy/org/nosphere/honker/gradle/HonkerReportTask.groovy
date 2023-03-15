@@ -19,15 +19,19 @@ import groovy.transform.CompileStatic;
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
-
+import org.gradle.work.DisableCachingByDefault
 import org.nosphere.honker.gradle.deptree.GradleDepTreeLoader
 import org.nosphere.honker.visitors.LicensingReportVisitor
 
+@DisableCachingByDefault(because = "Console report")
 @CompileStatic
 class HonkerReportTask extends DefaultTask
 {
   @InputFiles
+  @PathSensitive(PathSensitivity.RELATIVE)
   Configuration configuration = project.configurations.getByName 'runtimeClasspath'
 
   @TaskAction
