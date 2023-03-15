@@ -216,6 +216,10 @@ class GradlePomLoader implements DepTreePomLoader
 
   private static final AtomicLong POM_RESOLVING_CONFIG_COUNT = new AtomicLong();
 
+  private Project theProject() {
+    return project
+  }
+
   private final LoadingCache<Map<String, String>, Collection<ResolvedArtifact>> resolvedArtifactCache =
     CacheBuilder.newBuilder().concurrencyLevel( 1 ).build(
       new CacheLoader<Map<String, String>, Collection<ResolvedArtifact>>() {
@@ -223,6 +227,7 @@ class GradlePomLoader implements DepTreePomLoader
         public Collection<ResolvedArtifact> load( Map<String, String> gav ) throws Exception
         {
           String configName = "honkerPomLoader${ POM_RESOLVING_CONFIG_COUNT.getAndIncrement() }";
+          def project = theProject()
           project.getConfigurations().create( configName );
           project.getDependencies().add( configName, gav );
           Configuration config = project.getConfigurations().getByName( configName );

@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.tag
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,4 +19,22 @@
  * under the License.
  */
 
-rootProject.name = 'honker-gradle'
+plugins {
+    `gradle-enterprise`
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
+}
+
+rootProject.name = "honker-gradle"
+
+
+val isCI = providers.environmentVariable("CI").orNull == "true"
+if (isCI) {
+    gradleEnterprise {
+        buildScan {
+            termsOfServiceUrl = "https://gradle.com/terms-of-service"
+            termsOfServiceAgree = "yes"
+            publishAlways()
+            tag("CI")
+        }
+    }
+}

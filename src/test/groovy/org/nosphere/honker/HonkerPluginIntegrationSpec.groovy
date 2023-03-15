@@ -18,17 +18,21 @@
  */
 package org.nosphere.honker
 
-import nebula.test.IntegrationSpec
-import nebula.test.functional.ExecutionResult
+import org.gradle.testkit.runner.BuildResult
 import spock.lang.Unroll
+
+import static org.gradle.testkit.runner.TaskOutcome.FAILED
+import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 /**
  * Honker Plugin IntegrationSpec.
  */
-class HonkerPluginIntegrationSpec extends IntegrationSpec {
+class HonkerPluginIntegrationSpec extends AbstractIntegrationSpec {
 
     def build = '''
-            apply plugin: 'org.nosphere.honker'
+            plugins {
+                id 'org.nosphere.honker'
+            }
             honker {
                 license 'Apache License 2.0'
             }
@@ -68,15 +72,14 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
     @Unroll
     def 'runs honkerReport (gradle=#testedGradleVersion)'() {
         setup:
-        fork = true
         gradleVersion = testedGradleVersion
         buildFile << build
 
         when:
-        ExecutionResult result = runTasksSuccessfully 'honkerReport'
+        BuildResult result = runTasksSuccessfully 'honkerReport'
 
         then:
-        result.wasExecuted 'honkerReport'
+        result.task(':honkerReport').outcome == SUCCESS
 
         where:
         testedGradleVersion << TestEnv.TESTED_GRADLE_VERSIONS
@@ -85,19 +88,18 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
     @Unroll
     def 'honkerCheck failures (gradle=#testedGradleVersion)'() {
         setup:
-        fork = true
         gradleVersion = testedGradleVersion
         buildFile << build
 
         when:
-        ExecutionResult result = runTasksWithFailure 'honkerCheck'
+        BuildResult result = runTasksWithFailure 'honkerCheck'
 
         then:
-        result.wasExecuted 'honkerCheck'
-        result.standardError.contains 'Execution failed for task \':honkerCheck\'.'
-        result.standardError.contains 'License check failures: 2'
-        result.standardError.contains 'mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0'
-        result.standardError.contains 'asm:asm:3.1:jar no licensing data could be found'
+        result.task(':honkerCheck').outcome == FAILED
+        result.output.contains 'Execution failed for task \':honkerCheck\'.'
+        result.output.contains 'License check failures: 2'
+        result.output.contains 'mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0'
+        result.output.contains 'asm:asm:3.1:jar no licensing data could be found'
 
         where:
         testedGradleVersion << TestEnv.TESTED_GRADLE_VERSIONS
@@ -106,26 +108,25 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
     @Unroll
     def 'honkerGenAll generate DEPENDENCIES, LICENSE and NOTICE files that are present in JAR (gradle=#testedGradleVersion)'() {
         setup:
-        fork = true
         gradleVersion = testedGradleVersion
         buildFile << build
 
         when:
-        ExecutionResult result = runTasksSuccessfully 'jar'
+        BuildResult result = runTasksSuccessfully 'jar'
 
         then:
 
-        result.wasExecuted 'honkerGenDependencies'
+        result.task(':honkerGenDependencies').outcome == SUCCESS
         fileExists 'build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt'
         def dependenciesText = file('build/generated-resources/dependencies/META-INF/DEPENDENCIES.txt').text
         dependenciesText.contains 'From: France Telecom R&D'
 
-        result.wasExecuted 'honkerGenLicense'
+        result.task(':honkerGenLicense').outcome == SUCCESS
         fileExists 'build/generated-resources/license/META-INF/LICENSE.txt'
         def licenseText = file('build/generated-resources/license/META-INF/LICENSE.txt').text
         licenseText.contains 'TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION'
 
-        result.wasExecuted 'honkerGenNotice'
+        result.task(':honkerGenNotice').outcome == SUCCESS
         fileExists 'build/generated-resources/notice/META-INF/NOTICE.txt'
         def noticeText = file('build/generated-resources/notice/META-INF/NOTICE.txt').text
         noticeText.contains "Copyright ${Calendar.getInstance().get(Calendar.YEAR)} The Apache Software Foundation"
@@ -138,7 +139,6 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
     @Unroll
     def 'dependency license override (gradle=#testedGradleVersion)'() {
         setup:
-        fork = true
         gradleVersion = testedGradleVersion
         buildFile << build + '''
         honker {
@@ -151,13 +151,13 @@ class HonkerPluginIntegrationSpec extends IntegrationSpec {
         '''.stripIndent()
 
         when:
-        ExecutionResult result = runTasksWithFailure 'honkerCheck'
+        BuildResult result = runTasksWithFailure 'honkerCheck'
 
         then:
-        result.wasExecuted 'honkerCheck'
-        result.standardError.contains 'Execution failed for task \':honkerCheck\'.'
-        result.standardError.contains 'mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0'
-        !result.standardError.contains('asm:asm:3.1:jar no licensing data could be found')
+        result.task(':honkerCheck').outcome == FAILED
+        result.output.contains 'Execution failed for task \':honkerCheck\'.'
+        result.output.contains 'mysql:mysql-connector-java:5.1.35:jar GNU General Public License conflicts with The Apache Software License, Version 2.0'
+        !result.output.contains('asm:asm:3.1:jar no licensing data could be found')
 
         where:
         testedGradleVersion << TestEnv.TESTED_GRADLE_VERSIONS

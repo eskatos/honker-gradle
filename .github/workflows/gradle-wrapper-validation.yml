@@ -14,10 +14,24 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+name: "Validate Gradle Wrapper"
 
-group=org.nosphere.honker
-version=0.4.1-SNAPSHOT
-systemProp.file.encoding=utf-8
-org.gradle.caching=true
-org.gradle.parallel=true
-org.gradle.warning.mode=fail
+on:
+  push:
+    paths:
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'gradle/wrapper/'
+  pull_request:
+    paths:
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'gradle/wrapper/'
+
+jobs:
+  validation:
+    name: "Validation"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gradle/wrapper-validation-action@v1

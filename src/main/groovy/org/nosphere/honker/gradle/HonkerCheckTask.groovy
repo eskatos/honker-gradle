@@ -20,17 +20,21 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
-
+import org.gradle.work.DisableCachingByDefault
 import org.nosphere.honker.License
 import org.nosphere.honker.gradle.deptree.GradleDepTreeLoader
 import org.nosphere.honker.visitors.LicenseConflictVisitor
 import org.nosphere.honker.visitors.LicensePresenceVisitor
 
+@DisableCachingByDefault(because = "inputs don't take artifact metadata into account")
 @CompileStatic
 class HonkerCheckTask extends DefaultTask
 {
   @InputFiles
+  @PathSensitive(PathSensitivity.RELATIVE)
   Configuration configuration = project.configurations.getByName 'runtimeClasspath'
 
   @TaskAction
