@@ -8,7 +8,7 @@ Build script snippet for use in all Gradle versions >= 2.1:
 
 ```groovy
 plugins {
-  id "org.nosphere.honker" version "0.3.0"
+  id "org.nosphere.honker" version "0.4.0"
 }
 ```
 
@@ -17,12 +17,10 @@ Build script snippet for previous Gradle versions
 ```groovy
 buildscript {
   repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
+    gradlePluginPortal()
   }
   dependencies {
-    classpath "gradle.plugin.org.nosphere.honker:honker-gradle:0.3.0"
+    classpath "gradle.plugin.org.nosphere.honker:honker-gradle:0.4.0"
   }
 }
 
